@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gastronomía - Andahuaylas Tours</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+    <link rel="stylesheet" href="../css/pages/gastronomia.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="../js/script.js" defer></script>
+    <script src="../js/pages/gastronomia.js" defer></script>
+</head>
+<body>
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-mountain"></i>
+                <span>Andahuaylas Tours</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="../index.html" class="nav-link">Inicio</a>
+                <a href="destinos.html" class="nav-link">Destinos</a>
+                <a href="gastronomia.html" class="nav-link active">Gastronomía</a>
+                <a href="transporte.html" class="nav-link">Transporte</a>
+                <a href="hospedaje.html" class="nav-link">Hospedaje</a>
+                <a href="reservas.html" class="nav-link">Reservas</a>
+                <a href="contacto.html" class="nav-link">Contacto</a>
+            </div>
+            <div class="nav-toggle" id="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero gastronomia-hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="breadcrumb">
+                <a href="../index.html"><i class="fas fa-home"></i> Inicio</a>
+                <span><i class="fas fa-chevron-right"></i></span>
+                <span>Gastronomía</span>
+            </div>
+            <h1 class="page-title">
+                <i class="fas fa-utensils"></i>
+                Gastronomía de Andahuaylas
+            </h1>
+            <p class="page-subtitle">Descubre los sabores únicos de nuestra región</p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number">15+</span>
+                    <span class="stat-label">Restaurantes</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">8+</span>
+                    <span class="stat-label">Bares</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">20+</span>
+                    <span class="stat-label">Platos Típicos</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filtros y Búsqueda -->
+    <section class="filters-section">
+        <div class="container">
+            <div class="filters-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Buscar restaurantes, platos o bebidas...">
+                </div>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">
+                        <i class="fas fa-list"></i> Todos
+                    </button>
+                    <button class="filter-btn" data-filter="restaurante">
+                        <i class="fas fa-utensils"></i> Restaurantes
+                    </button>
+                    <button class="filter-btn" data-filter="bar">
+                        <i class="fas fa-cocktail"></i> Bares
+                    </button>
+                    <button class="filter-btn" data-filter="cafeteria">
+                        <i class="fas fa-coffee"></i> Cafeterías
+                    </button>
+                    <button class="filter-btn" data-filter="comida-rapida">
+                        <i class="fas fa-hamburger"></i> Comida Rápida
+                    </button>
+                </div>
+                <div class="price-filters">
+                    <button class="price-filter-btn active" data-price="all">Todos los precios</button>
+                    <button class="price-filter-btn" data-price="economico">$ Económico</button>
+                    <button class="price-filter-btn" data-price="moderado">$$ Moderado</button>
+                    <button class="price-filter-btn" data-price="premium">$$$ Premium</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Platos Destacados -->
+    <section class="featured-dishes">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-star"></i>
+                Platos Típicos Destacados
+            </h2>
+            <div class="dishes-slider">
+                <div class="dish-card">
+                    <div class="dish-image">
+                        <div class="image-placeholder">
+                            <i class="fas fa-drumstick-bite"></i>
+                        </div>
+                        <div class="dish-rating">
+                            <i class="fas fa-star"></i> 4.8
+                        </div>
+                    </div>
+                    <div class="dish-info">
+                        <h3>Pachamanca Andahuaylina</h3>
+                        <p>Plato tradicional cocinado bajo tierra con carnes, papas y habas</p>
+                        <div class="dish-tags">
+                            <span class="tag">Tradicional</span>
+                            <span class="tag">Ceremonia</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dish-card">
+                    <div class="dish-image">
+                        <div class="image-placeholder">
+                            <i class="fas fa-fish"></i>
+                        </div>
+                        <div class="dish-rating">
+                            <i class="fas fa-star"></i> 4.6
+                        </div>
+                    </div>
+                    <div class="dish-info">
+                        <h3>Trucha Frita</h3>
+                        <p>Trucha fresca de las lagunas locales, frita con especias andinas</p>
+                        <div class="dish-tags">
+                            <span class="tag">Fresco</span>
+                            <span class="tag">Local</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dish-card">
+                    <div class="dish-image">
+                        <div class="image-placeholder">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <div class="dish-rating">
+                            <i class="fas fa-star"></i> 4.9
+                        </div>
+                    </div>
+                    <div class="dish-info">
+                        <h3>Kapchi de Habas</h3>
+                        <p>Guiso cremoso de habas tiernas con queso fresco y hierbas</p>
+                        <div class="dish-tags">
+                            <span class="tag">Vegetariano</span>
+                            <span class="tag">Cremoso</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Grid de Establecimientos -->
+    <section class="establishments-grid">
+        <div class="container">
+            <h2 class="section-title">Restaurantes y Bares</h2>
+            <div class="establishments-container" id="establishmentsContainer">
+                <!-- Los establecimientos se cargan dinámicamente -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Recomendaciones -->
+    <section class="recommendations">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-heart"></i>
+                Recomendaciones del Chef
+            </h2>
+            <div class="recommendations-grid">
+                <div class="recommendation-card">
+                    <div class="recommendation-header">
+                        <i class="fas fa-award"></i>
+                        <h3>Para Celebraciones</h3>
+                    </div>
+                    <ul>
+                        <li><strong>El Mirador:</strong> Vista panorámica, perfecto para ocasiones especiales</li>
+                        <li><strong>La Casona:</strong> Ambiente colonial, ideal para cenas románticas</li>
+                        <li><strong>Quinua Real:</strong> Cocina fusion andina, experiencia gourmet</li>
+                    </ul>
+                </div>
+
+                <div class="recommendation-card">
+                    <div class="recommendation-header">
+                        <i class="fas fa-clock"></i>
+                        <h3>Comida Rápida</h3>
+                    </div>
+                    <ul>
+                        <li><strong>Chifa Express:</strong> Fusión chino-peruana rápida y deliciosa</li>
+                        <li><strong>Burger Andes:</strong> Hamburguesas gourmet con ingredientes locales</li>
+                        <li><strong>Pizza Andina:</strong> Pizzas con sabores únicos de la región</li>
+                    </ul>
+                </div>
+
+                <div class="recommendation-card">
+                    <div class="recommendation-header">
+                        <i class="fas fa-leaf"></i>
+                        <h3>Opciones Saludables</h3>
+                    </div>
+                    <ul>
+                        <li><strong>Verde Vida:</strong> Cocina vegetariana y vegana</li>
+                        <li><strong>Quinua & Co:</strong> Superalimentos andinos</li>
+                        <li><strong>Fresh Garden:</strong> Ensaladas y jugos naturales</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>¿Listo para una experiencia gastronómica única?</h2>
+                <p>Reserva tu mesa en los mejores restaurantes de Andahuaylas</p>
+                <div class="cta-buttons">
+                    <a href="reservas.html" class="cta-button primary">
+                        <i class="fas fa-calendar-check"></i>
+                        Reservar Mesa
+                    </a>
+                    <a href="contacto.html" class="cta-button secondary">
+                        <i class="fas fa-phone"></i>
+                        Consultar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-mountain"></i> Andahuaylas Tours</h3>
+                    <p>Descubre los mejores sabores de Andahuaylas con nuestras recomendaciones gastronómicas especializadas.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Páginas</h4>
+                    <ul>
+                        <li><a href="destinos.html">Destinos</a></li>
+                        <li><a href="gastronomia.html">Gastronomía</a></li>
+                        <li><a href="transporte.html">Transporte</a></li>
+                        <li><a href="hospedaje.html">Hospedaje</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Servicios Gastronómicos</h4>
+                    <ul>
+                        <li><a href="#restaurantes">Restaurantes</a></li>
+                        <li><a href="#bares">Bares y Pubs</a></li>
+                        <li><a href="#cafeterias">Cafeterías</a></li>
+                        <li><a href="#tours-gastronomicos">Tours Gastronómicos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contacto Gastronómico</h4>
+                    <p>¿Necesitas recomendaciones especiales?</p>
+                    <div class="newsletter">
+                        <input type="email" placeholder="Tu email">
+                        <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Andahuaylas Tours. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal para detalles del establecimiento -->
+    <div class="modal" id="establishmentModal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div class="modal-body" id="modalBody">
+                <!-- Contenido dinámico del establecimiento -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>

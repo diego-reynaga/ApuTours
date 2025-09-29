@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospedaje - Andahuaylas Tours</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+    <link rel="stylesheet" href="../css/pages/hospedaje.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="../js/script.js" defer></script>
+    <script src="../js/pages/hospedaje.js" defer></script>
+</head>
+<body>
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-mountain"></i>
+                <span>Andahuaylas Tours</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="../index.html" class="nav-link">Inicio</a>
+                <a href="destinos.html" class="nav-link">Destinos</a>
+                <a href="gastronomia.html" class="nav-link">Gastronomía</a>
+                <a href="transporte.html" class="nav-link">Transporte</a>
+                <a href="hospedaje.html" class="nav-link active">Hospedaje</a>
+                <a href="reservas.html" class="nav-link">Reservas</a>
+                <a href="contacto.html" class="nav-link">Contacto</a>
+            </div>
+            <div class="nav-toggle" id="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero hospedaje-hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="breadcrumb">
+                <a href="../index.html"><i class="fas fa-home"></i> Inicio</a>
+                <span><i class="fas fa-chevron-right"></i></span>
+                <span>Hospedaje</span>
+            </div>
+            <h1 class="page-title">
+                <i class="fas fa-bed"></i>
+                Hospedaje en Andahuaylas
+            </h1>
+            <p class="page-subtitle">Encuentra el alojamiento perfecto para tu estadía</p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number">20+</span>
+                    <span class="stat-label">Alojamientos</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">95%</span>
+                    <span class="stat-label">Satisfacción</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">24/7</span>
+                    <span class="stat-label">Soporte</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Buscador de Hospedaje -->
+    <section class="accommodation-search">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-search"></i>
+                Encuentra tu Hospedaje Ideal
+            </h2>
+            <div class="search-form-container">
+                <form class="search-form" id="accommodationSearchForm">
+                    <div class="search-row">
+                        <div class="search-group">
+                            <label for="checkin">
+                                <i class="fas fa-calendar-check"></i> Check-in
+                            </label>
+                            <input type="date" id="checkin" name="checkin" required>
+                        </div>
+                        <div class="search-group">
+                            <label for="checkout">
+                                <i class="fas fa-calendar-times"></i> Check-out
+                            </label>
+                            <input type="date" id="checkout" name="checkout" required>
+                        </div>
+                        <div class="search-group">
+                            <label for="guests">
+                                <i class="fas fa-users"></i> Huéspedes
+                            </label>
+                            <select id="guests" name="guests">
+                                <option value="1">1 Huésped</option>
+                                <option value="2">2 Huéspedes</option>
+                                <option value="3">3 Huéspedes</option>
+                                <option value="4">4 Huéspedes</option>
+                                <option value="5">5+ Huéspedes</option>
+                            </select>
+                        </div>
+                        <div class="search-group">
+                            <label for="budget">
+                                <i class="fas fa-dollar-sign"></i> Presupuesto
+                            </label>
+                            <select id="budget" name="budget">
+                                <option value="all">Cualquier precio</option>
+                                <option value="budget">Hasta S/. 80</option>
+                                <option value="mid">S/. 80 - S/. 150</option>
+                                <option value="luxury">S/. 150+</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="search-btn">
+                        <i class="fas fa-search"></i>
+                        Buscar Hospedajes
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filtros y Categorías -->
+    <section class="filters-section">
+        <div class="container">
+            <div class="filters-container">
+                <div class="category-filters">
+                    <button class="category-filter active" data-category="all">
+                        <i class="fas fa-list"></i> Todos
+                    </button>
+                    <button class="category-filter" data-category="hotel">
+                        <i class="fas fa-hotel"></i> Hoteles
+                    </button>
+                    <button class="category-filter" data-category="hostal">
+                        <i class="fas fa-bed"></i> Hostales
+                    </button>
+                    <button class="category-filter" data-category="casa-rural">
+                        <i class="fas fa-home"></i> Casas Rurales
+                    </button>
+                    <button class="category-filter" data-category="lodge">
+                        <i class="fas fa-tree"></i> Lodges
+                    </button>
+                </div>
+                
+                <div class="amenity-filters">
+                    <button class="amenity-filter" data-amenity="wifi">
+                        <i class="fas fa-wifi"></i> WiFi
+                    </button>
+                    <button class="amenity-filter" data-amenity="parking">
+                        <i class="fas fa-parking"></i> Estacionamiento
+                    </button>
+                    <button class="amenity-filter" data-amenity="restaurant">
+                        <i class="fas fa-utensils"></i> Restaurante
+                    </button>
+                    <button class="amenity-filter" data-amenity="spa">
+                        <i class="fas fa-spa"></i> Spa
+                    </button>
+                    <button class="amenity-filter" data-amenity="pet-friendly">
+                        <i class="fas fa-dog"></i> Pet Friendly
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Grid de Hospedajes -->
+    <section class="accommodations-grid">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Alojamientos Disponibles</h2>
+                <div class="sort-options">
+                    <select id="sortBy">
+                        <option value="price-asc">Precio: Menor a Mayor</option>
+                        <option value="price-desc">Precio: Mayor a Menor</option>
+                        <option value="rating">Mejor Calificados</option>
+                        <option value="name">Nombre A-Z</option>
+                    </select>
+                </div>
+            </div>
+            <div class="accommodations-container" id="accommodationsContainer">
+                <!-- Los hospedajes se cargan dinámicamente -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Hospedajes Destacados -->
+    <section class="featured-accommodations">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-crown"></i>
+                Hospedajes Destacados
+            </h2>
+            <div class="featured-slider">
+                <div class="featured-card">
+                    <div class="featured-image">
+                        <div class="image-placeholder">
+                            <i class="fas fa-hotel"></i>
+                        </div>
+                        <div class="featured-badge">
+                            <i class="fas fa-award"></i> Recomendado
+                        </div>
+                    </div>
+                    <div class="featured-content">
+                        <h3>Hotel Casa Colonial</h3>
+                        <div class="featured-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <span>4.9</span>
+                        </div>
+                        <p>Elegante hotel boutique en casona colonial restaurada</p>
+                        <div class="featured-price">
+                            Desde <span>S/. 180</span>/noche
+                        </div>
+                    </div>
+                </div>
+
+                <div class="featured-card">
+                    <div class="featured-image">
+                        <div class="image-placeholder">
+                            <i class="fas fa-tree"></i>
+                        </div>
+                        <div class="featured-badge eco">
+                            <i class="fas fa-leaf"></i> Eco Lodge
+                        </div>
+                    </div>
+                    <div class="featured-content">
+                        <h3>Pacucha Eco Lodge</h3>
+                        <div class="featured-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <span>4.8</span>
+                        </div>
+                        <p>Lodge ecológico con vista directa a la Laguna de Pacucha</p>
+                        <div class="featured-price">
+                            Desde <span>S/. 220</span>/noche
+                        </div>
+                    </div>
+                </div>
+
+                <div class="featured-card">
+                    <div class="featured-image">
+                        <div class="image-placeholder">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <div class="featured-badge budget">
+                            <i class="fas fa-tag"></i> Mejor Precio
+                        </div>
+                    </div>
+                    <div class="featured-content">
+                        <h3>Hostal Familiar Andino</h3>
+                        <div class="featured-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <span>4.3</span>
+                        </div>
+                        <p>Acogedor hostal familiar con ambiente cálido y tradicional</p>
+                        <div class="featured-price">
+                            Desde <span>S/. 45</span>/noche
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experiencias Incluidas -->
+    <section class="included-experiences">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-gift"></i>
+                Experiencias Incluidas
+            </h2>
+            <div class="experiences-grid">
+                <div class="experience-card">
+                    <div class="experience-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h3>Desayuno Tradicional</h3>
+                    <p>Desayuno andino con productos locales y vista panorámica</p>
+                    <div class="experience-hotels">
+                        Disponible en: Hotel Casa Colonial, Pacucha Lodge, +3 más
+                    </div>
+                </div>
+
+                <div class="experience-card">
+                    <div class="experience-icon">
+                        <i class="fas fa-hiking"></i>
+                    </div>
+                    <h3>Tours Guiados</h3>
+                    <p>Excursiones gratuitas a sitios arqueológicos cercanos</p>
+                    <div class="experience-hotels">
+                        Disponible en: Todos los lodges y hoteles 4+ estrellas
+                    </div>
+                </div>
+
+                <div class="experience-card">
+                    <div class="experience-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <h3>Transfer Incluido</h3>
+                    <p>Traslado gratuito desde/hacia el aeropuerto o terminal</p>
+                    <div class="experience-hotels">
+                        Disponible en: Hospedajes categoría premium
+                    </div>
+                </div>
+
+                <div class="experience-card">
+                    <div class="experience-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <h3>Fogata Nocturna</h3>
+                    <p>Veladas tradicionales con música y historias locales</p>
+                    <div class="experience-hotels">
+                        Disponible en: Casas rurales y eco lodges
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Políticas y Servicios -->
+    <section class="policies-services">
+        <div class="container">
+            <div class="policies-grid">
+                <div class="policy-card">
+                    <h3><i class="fas fa-shield-alt"></i> Políticas de Seguridad</h3>
+                    <ul>
+                        <li>Protocolos sanitarios actualizados</li>
+                        <li>Limpieza profunda entre huéspedes</li>
+                        <li>Personal capacitado en bioseguridad</li>
+                        <li>Seguro de alojamiento incluido</li>
+                    </ul>
+                </div>
+
+                <div class="policy-card">
+                    <h3><i class="fas fa-calendar-times"></i> Políticas de Cancelación</h3>
+                    <ul>
+                        <li>Cancelación gratuita hasta 48h antes</li>
+                        <li>Reembolso completo por causas de fuerza mayor</li>
+                        <li>Reprogramación flexible sin costo adicional</li>
+                        <li>Política especial para grupos grandes</li>
+                    </ul>
+                </div>
+
+                <div class="policy-card">
+                    <h3><i class="fas fa-concierge-bell"></i> Servicios Adicionales</h3>
+                    <ul>
+                        <li>Servicio de lavandería</li>
+                        <li>Alquiler de equipos de trekking</li>
+                        <li>Organización de tours personalizados</li>
+                        <li>Servicio de room service</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>¿Listo para tu estadía perfecta?</h2>
+                <p>Reserva ahora y asegura tu lugar en los mejores hospedajes de Andahuaylas</p>
+                <div class="cta-buttons">
+                    <a href="reservas.html" class="cta-button primary">
+                        <i class="fas fa-bed"></i>
+                        Reservar Hospedaje
+                    </a>
+                    <a href="contacto.html" class="cta-button secondary">
+                        <i class="fas fa-phone"></i>
+                        Consultar Disponibilidad
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-mountain"></i> Andahuaylas Tours</h3>
+                    <p>Los mejores hospedajes de Andahuaylas te esperan. Comodidad, autenticidad y hospitalidad andina.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Tipos de Hospedaje</h4>
+                    <ul>
+                        <li><a href="#hoteles">Hoteles</a></li>
+                        <li><a href="#hostales">Hostales</a></li>
+                        <li><a href="#casas-rurales">Casas Rurales</a></li>
+                        <li><a href="#lodges">Eco Lodges</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Servicios</h4>
+                    <ul>
+                        <li><a href="#reservas">Reservas Online</a></li>
+                        <li><a href="#transfers">Transfers</a></li>
+                        <li><a href="#tours">Tours Incluidos</a></li>
+                        <li><a href="#experiencias">Experiencias</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Reservas Directas</h4>
+                    <p><i class="fas fa-phone"></i> +51 983 HOTELES</p>
+                    <p><i class="fas fa-whatsapp"></i> WhatsApp 24/7</p>
+                    <div class="newsletter">
+                        <input type="email" placeholder="Tu email">
+                        <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Andahuaylas Tours - Hospedaje. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal para detalles del hospedaje -->
+    <div class="modal" id="accommodationModal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div class="modal-body" id="modalBody">
+                <!-- Contenido dinámico del hospedaje -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>

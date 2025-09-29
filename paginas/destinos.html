@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destinos Turísticos - Andahuaylas Tours</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+    <link rel="stylesheet" href="../css/pages/destinos.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header Component -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-mountain"></i>
+                <span>Andahuaylas Tours</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="../index.html" class="nav-link">Inicio</a>
+                <a href="destinos.html" class="nav-link active">Destinos</a>
+                <a href="servicios.html" class="nav-link">Servicios</a>
+                <a href="reservas.html" class="nav-link">Reservas</a>
+                <a href="contacto.html" class="nav-link">Contacto</a>
+            </div>
+            <div class="nav-toggle" id="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="../index.html"><i class="fas fa-home"></i> Inicio</a>
+                <span><i class="fas fa-chevron-right"></i></span>
+                <span>Destinos Turísticos</span>
+            </div>
+            <h1 class="page-title">Destinos Turísticos</h1>
+            <p class="page-subtitle">Descubre los lugares más fascinantes de Andahuaylas</p>
+        </div>
+    </section>
+
+    <!-- Filters and Search -->
+    <section class="filters-section">
+        <div class="container">
+            <div class="filters-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Buscar destinos...">
+                </div>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">
+                        <i class="fas fa-globe"></i> Todos
+                    </button>
+                    <button class="filter-btn" data-filter="natural">
+                        <i class="fas fa-leaf"></i> Natural
+                    </button>
+                    <button class="filter-btn" data-filter="arqueologico">
+                        <i class="fas fa-landmark"></i> Arqueológico
+                    </button>
+                    <button class="filter-btn" data-filter="aventura">
+                        <i class="fas fa-mountain"></i> Aventura
+                    </button>
+                    <button class="filter-btn" data-filter="cultural">
+                        <i class="fas fa-users"></i> Cultural
+                    </button>
+                </div>
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="grid">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button class="view-btn" data-view="list">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Destinations Catalog -->
+    <section class="destinations-catalog">
+        <div class="container">
+            <div id="destinations-grid" class="destinations-grid">
+                <!-- Laguna de Pacucha -->
+                <div class="destination-card fade-in" data-category="natural aventura" data-destination="pacucha">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3" alt="Laguna de Pacucha" loading="lazy">
+                        <div class="card-overlay">
+                            <div class="card-badges">
+                                <span class="badge badge-natural">Natural</span>
+                                <span class="badge badge-aventura">Aventura</span>
+                            </div>
+                            <div class="card-actions">
+                                <button class="action-btn" onclick="toggleFavorite(this)" title="Agregar a favoritos">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button class="action-btn" onclick="shareDestination('pacucha')" title="Compartir">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h3 class="card-title">Laguna de Pacucha</h3>
+                            <div class="card-rating">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="rating-text">(4.9)</span>
+                            </div>
+                        </div>
+                        <p class="card-description">
+                            Espejo de agua cristalina rodeado de montañas majestuosas. Perfecta para fotografía, pesca deportiva y actividades acuáticas.
+                        </p>
+                        <div class="card-features">
+                            <div class="feature">
+                                <i class="fas fa-clock"></i>
+                                <span>4-6 horas</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>15 km del centro</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-users"></i>
+                                <span>Familiar</span>
+                            </div>
+                        </div>
+                        <div class="card-highlights">
+                            <span><i class="fas fa-camera"></i> Fotografía</span>
+                            <span><i class="fas fa-swimmer"></i> Deportes acuáticos</span>
+                            <span><i class="fas fa-hiking"></i> Senderismo</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="price-info">
+                                <span class="price">S/ 25</span>
+                                <span class="price-label">por persona</span>
+                            </div>
+                            <div class="card-buttons">
+                                <button class="btn btn-outline btn-sm" onclick="openDestinationModal('pacucha')">
+                                    <i class="fas fa-info"></i> Detalles
+                                </button>
+                                <button class="btn btn-primary btn-sm" onclick="bookTour('pacucha')">
+                                    <i class="fas fa-calendar-plus"></i> Reservar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sayhuite -->
+                <div class="destination-card fade-in" data-category="arqueologico cultural" data-destination="sayhuite">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?ixlib=rb-4.0.3" alt="Sayhuite" loading="lazy">
+                        <div class="card-overlay">
+                            <div class="card-badges">
+                                <span class="badge badge-arqueologico">Arqueológico</span>
+                                <span class="badge badge-cultural">Cultural</span>
+                            </div>
+                            <div class="card-actions">
+                                <button class="action-btn" onclick="toggleFavorite(this)">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button class="action-btn" onclick="shareDestination('sayhuite')">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h3 class="card-title">Complejo Arqueológico Sayhuite</h3>
+                            <div class="card-rating">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="rating-text">(4.8)</span>
+                            </div>
+                        </div>
+                        <p class="card-description">
+                            Sitio arqueológico preinca famoso por la Piedra de Sayhuite, una maqueta lítica única en el mundo que representa el cosmos andino.
+                        </p>
+                        <div class="card-features">
+                            <div class="feature">
+                                <i class="fas fa-clock"></i>
+                                <span>2-3 horas</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>47 km del centro</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-graduation-cap"></i>
+                                <span>Educativo</span>
+                            </div>
+                        </div>
+                        <div class="card-highlights">
+                            <span><i class="fas fa-history"></i> Historia</span>
+                            <span><i class="fas fa-university"></i> Cultura Inca</span>
+                            <span><i class="fas fa-eye"></i> Observación</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="price-info">
+                                <span class="price">S/ 15</span>
+                                <span class="price-label">por persona</span>
+                            </div>
+                            <div class="card-buttons">
+                                <button class="btn btn-outline btn-sm" onclick="openDestinationModal('sayhuite')">
+                                    <i class="fas fa-info"></i> Detalles
+                                </button>
+                                <button class="btn btn-primary btn-sm" onclick="bookTour('sayhuite')">
+                                    <i class="fas fa-calendar-plus"></i> Reservar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sondor -->
+                <div class="destination-card fade-in" data-category="arqueologico natural" data-destination="sondor">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3" alt="Sondor" loading="lazy">
+                        <div class="card-overlay">
+                            <div class="card-badges">
+                                <span class="badge badge-arqueologico">Arqueológico</span>
+                                <span class="badge badge-natural">Natural</span>
+                            </div>
+                            <div class="card-actions">
+                                <button class="action-btn" onclick="toggleFavorite(this)">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button class="action-btn" onclick="shareDestination('sondor')">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h3 class="card-title">Sondor - Templo de la Luna</h3>
+                            <div class="card-rating">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <span class="rating-text">(4.7)</span>
+                            </div>
+                        </div>
+                        <p class="card-description">
+                            Complejo arqueológico chanka con terrazas agrícolas y vistas panorámicas espectaculares del valle de Andahuaylas.
+                        </p>
+                        <div class="card-features">
+                            <div class="feature">
+                                <i class="fas fa-clock"></i>
+                                <span>3-4 horas</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>20 km del centro</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-mountain"></i>
+                                <span>Moderado</span>
+                            </div>
+                        </div>
+                        <div class="card-highlights">
+                            <span><i class="fas fa-archway"></i> Arqueología</span>
+                            <span><i class="fas fa-eye"></i> Vistas panorámicas</span>
+                            <span><i class="fas fa-users"></i> Cultura ancestral</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="price-info">
+                                <span class="price">S/ 20</span>
+                                <span class="price-label">por persona</span>
+                            </div>
+                            <div class="card-buttons">
+                                <button class="btn btn-outline btn-sm" onclick="openDestinationModal('sondor')">
+                                    <i class="fas fa-info"></i> Detalles
+                                </button>
+                                <button class="btn btn-primary btn-sm" onclick="bookTour('sondor')">
+                                    <i class="fas fa-calendar-plus"></i> Reservar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chincheros -->
+                <div class="destination-card fade-in" data-category="natural aventura" data-destination="chincheros">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1464822759844-d150baec95b0?ixlib=rb-4.0.3" alt="Chincheros" loading="lazy">
+                        <div class="card-overlay">
+                            <div class="card-badges">
+                                <span class="badge badge-natural">Natural</span>
+                                <span class="badge badge-aventura">Aventura</span>
+                            </div>
+                            <div class="card-actions">
+                                <button class="action-btn" onclick="toggleFavorite(this)">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button class="action-btn" onclick="shareDestination('chincheros')">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h3 class="card-title">Chincheros</h3>
+                            <div class="card-rating">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <span class="rating-text">(4.6)</span>
+                            </div>
+                        </div>
+                        <p class="card-description">
+                            Distrito andino con paisajes naturales impresionantes, ideal para trekking y observación de flora y fauna local.
+                        </p>
+                        <div class="card-features">
+                            <div class="feature">
+                                <i class="fas fa-clock"></i>
+                                <span>6-8 horas</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>35 km del centro</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-hiking"></i>
+                                <span>Trekking</span>
+                            </div>
+                        </div>
+                        <div class="card-highlights">
+                            <span><i class="fas fa-leaf"></i> Naturaleza</span>
+                            <span><i class="fas fa-binoculars"></i> Observación</span>
+                            <span><i class="fas fa-mountain"></i> Montañismo</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="price-info">
+                                <span class="price">S/ 35</span>
+                                <span class="price-label">por persona</span>
+                            </div>
+                            <div class="card-buttons">
+                                <button class="btn btn-outline btn-sm" onclick="openDestinationModal('chincheros')">
+                                    <i class="fas fa-info"></i> Detalles
+                                </button>
+                                <button class="btn btn-primary btn-sm" onclick="bookTour('chincheros')">
+                                    <i class="fas fa-calendar-plus"></i> Reservar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Más destinos pueden agregarse aquí -->
+            </div>
+
+            <!-- Load More Button -->
+            <div class="load-more-container">
+                <button class="btn btn-outline btn-lg" id="loadMoreBtn">
+                    <i class="fas fa-plus"></i> Cargar Más Destinos
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Tours Section -->
+    <section class="featured-tours">
+        <div class="container">
+            <h2 class="section-title">Tours Recomendados</h2>
+            <div class="tours-grid">
+                <div class="tour-card">
+                    <div class="tour-badge">Más Popular</div>
+                    <div class="tour-icon">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <h3>Tour Completo Andahuaylas</h3>
+                    <p>3 días visitando los principales atractivos turísticos con guía especializado</p>
+                    <ul class="tour-includes">
+                        <li><i class="fas fa-check"></i> Transporte incluido</li>
+                        <li><i class="fas fa-check"></i> Guía profesional</li>
+                        <li><i class="fas fa-check"></i> Almuerzo típico</li>
+                    </ul>
+                    <div class="tour-price">S/ 180 <span>por persona</span></div>
+                    <button class="btn btn-primary" onclick="bookTour('tour-completo')">Ver Tour</button>
+                </div>
+                <div class="tour-card">
+                    <div class="tour-badge">Recomendado</div>
+                    <div class="tour-icon">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <h3>Ruta Arqueológica</h3>
+                    <p>2 días explorando sitios históricos y arqueológicos únicos</p>
+                    <ul class="tour-includes">
+                        <li><i class="fas fa-check"></i> Sitios arqueológicos</li>
+                        <li><i class="fas fa-check"></i> Guía historiador</li>
+                        <li><i class="fas fa-check"></i> Material educativo</li>
+                    </ul>
+                    <div class="tour-price">S/ 120 <span>por persona</span></div>
+                    <button class="btn btn-primary" onclick="bookTour('ruta-arqueologica')">Ver Tour</button>
+                </div>
+                <div class="tour-card">
+                    <div class="tour-badge">Aventura</div>
+                    <div class="tour-icon">
+                        <i class="fas fa-hiking"></i>
+                    </div>
+                    <h3>Trekking & Naturaleza</h3>
+                    <p>1 día de aventura y contacto con la naturaleza andina</p>
+                    <ul class="tour-includes">
+                        <li><i class="fas fa-check"></i> Equipo de trekking</li>
+                        <li><i class="fas fa-check"></i> Refrigerios</li>
+                        <li><i class="fas fa-check"></i> Seguro de aventura</li>
+                    </ul>
+                    <div class="tour-price">S/ 85 <span>por persona</span></div>
+                    <button class="btn btn-primary" onclick="bookTour('trekking-naturaleza')">Ver Tour</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Component -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-mountain"></i> Andahuaylas Tours</h3>
+                    <p>Tu puerta de entrada a las maravillas de Andahuaylas.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Enlaces Rápidos</h4>
+                    <ul>
+                        <li><a href="../index.html">Inicio</a></li>
+                        <li><a href="destinos.html">Destinos</a></li>
+                        <li><a href="servicios.html">Servicios</a></li>
+                        <li><a href="reservas.html">Reservas</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <p><i class="fas fa-phone"></i> +51 983 XXX XXX</p>
+                    <p><i class="fas fa-envelope"></i> info@andahuaylastours.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Plaza de Armas, Andahuaylas</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Andahuaylas Tours. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal para detalles de destinos -->
+    <div class="modal" id="destinationModal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div class="modal-body" id="modalBody">
+                <!-- Contenido dinámico -->
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/script.js"></script>
+    <script src="../js/pages/destinos.js"></script>
+</body>
+</html>

@@ -566,7 +566,7 @@ function bookTour(destination) {
 function shareDestination(destinationId) {
     if (navigator.share) {
         navigator.share({
-            title: 'Andahuaylas Tours',
+            title: 'ApuTours',
             text: 'Descubre este increíble destino en Andahuaylas',
             url: window.location.href
         });

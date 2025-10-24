@@ -496,7 +496,7 @@ class DestinosPage {
         if (!destination) return;
 
         const shareData = {
-            title: `${destination.name} - Andahuaylas Tours`,
+            title: `${destination.name} - ApuTours`,
             text: destination.description,
             url: window.location.href
         };

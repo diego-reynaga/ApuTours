@@ -298,17 +298,17 @@ section {
 /* Imágenes específicas para cada destino */
 .destination-card[data-destination="pacucha"] .card-image {
     background-image: linear-gradient(rgba(44, 90, 160, 0.25), rgba(44, 90, 160, 0.45)),
-                      url('https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&q=80');
+                      url('https://www.huillcaexpedition.com/images/blog/laguna-de-pacucha-historia-turismo-y-belleza-natural-en-apurimac-1737148745.jpg');
 }
 
 .destination-card[data-destination="sayhuite"] .card-image {
     background-image: linear-gradient(rgba(44, 90, 160, 0.25), rgba(44, 90, 160, 0.45)),
-                      url('https://images.unsplash.com/photo-1518098268026-4e89f1a2cd8e?w=800&q=80');
+                      url('https://hidraulicainca.com/wp-content/uploads/2013/07/piedra-saywite-3.jpg');
 }
 
 .destination-card[data-destination="incahuasi"] .card-image {
     background-image: linear-gradient(rgba(44, 90, 160, 0.25), rgba(44, 90, 160, 0.45)),
-                      url('https://images.unsplash.com/photo-1587595431973-160d0d94add1?w=800&q=80');
+                      url('https://consultasenlinea.mincetur.gob.pe/fichaInventario/foto.aspx?cod=471015');
 }
 
 .card-image::after {

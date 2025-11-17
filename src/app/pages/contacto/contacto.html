@@ -1,0 +1,229 @@
+<app-navbar></app-navbar>
+
+<!-- Hero Section -->
+<section class="contacto-hero">
+    <div class="container">
+        <div class="hero-pill">
+            <div class="pill-icon">
+                <i class="fas fa-comments"></i>
+            </div>
+            <span>Estamos aquí para ayudarte</span>
+        </div>
+        <h1 class="page-title">
+            Contáctanos
+            <span>Conversemos sobre tu próxima aventura</span>
+        </h1>
+        <p class="page-subtitle">
+            Nuestro equipo está disponible para responder tus preguntas y ayudarte a planificar el viaje perfecto por Andahuaylas
+        </p>
+    </div>
+</section>
+
+<!-- Contact Content -->
+<section class="contact-section">
+    <div class="container">
+        <div class="contact-grid">
+            <!-- Contact Form -->
+            <div class="contact-form-container">
+                <div class="form-header">
+                    <h2>Envíanos un mensaje</h2>
+                    <p>Completa el formulario y nos pondremos en contacto contigo lo antes posible</p>
+                </div>
+
+                @if (submitSuccess) {
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>¡Mensaje enviado!</strong>
+                            <p>Gracias por contactarnos. Responderemos pronto.</p>
+                        </div>
+                    </div>
+                }
+
+                @if (submitError) {
+                    <div class="alert alert-error">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <div>
+                            <strong>Error al enviar</strong>
+                            <p>Por favor, intenta nuevamente.</p>
+                        </div>
+                    </div>
+                }
+
+                <form class="contact-form" (ngSubmit)="onSubmit()">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">
+                                <i class="fas fa-user"></i>
+                                Nombre Completo
+                            </label>
+                            <input 
+                                type="text" 
+                                id="name" 
+                                [(ngModel)]="contactForm.name"
+                                name="name"
+                                placeholder="Tu nombre completo"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">
+                                <i class="fas fa-envelope"></i>
+                                Correo Electrónico
+                            </label>
+                            <input 
+                                type="email" 
+                                id="email"
+                                [(ngModel)]="contactForm.email"
+                                name="email"
+                                placeholder="tu@email.com"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">
+                                <i class="fas fa-phone"></i>
+                                Teléfono (opcional)
+                            </label>
+                            <input 
+                                type="tel" 
+                                id="phone"
+                                [(ngModel)]="contactForm.phone"
+                                name="phone"
+                                placeholder="+51 999 999 999">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject">
+                                <i class="fas fa-tag"></i>
+                                Asunto
+                            </label>
+                            <input 
+                                type="text" 
+                                id="subject"
+                                [(ngModel)]="contactForm.subject"
+                                name="subject"
+                                placeholder="¿En qué podemos ayudarte?"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">
+                            <i class="fas fa-comment-dots"></i>
+                            Mensaje
+                        </label>
+                        <textarea 
+                            id="message"
+                            [(ngModel)]="contactForm.message"
+                            name="message"
+                            rows="5"
+                            placeholder="Cuéntanos más sobre tu consulta..."
+                            required></textarea>
+                    </div>
+
+                    <button 
+                        type="submit" 
+                        class="submit-button"
+                        [disabled]="!isFormValid() || isSubmitting">
+                        @if (isSubmitting) {
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <span>Enviando...</span>
+                        } @else {
+                            <i class="fas fa-paper-plane"></i>
+                            <span>Enviar Mensaje</span>
+                        }
+                    </button>
+                </form>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="contact-info-container">
+                <div class="info-header">
+                    <h2>Información de contacto</h2>
+                    <p>Encuentra múltiples formas de comunicarte con nosotros</p>
+                </div>
+
+                <div class="info-cards">
+                    @for (info of contactInfo; track info.title) {
+                        <div class="info-card">
+                            <div class="info-icon">
+                                <i class="fas" [class]="info.icon"></i>
+                            </div>
+                            <div class="info-content">
+                                <h3>{{ info.title }}</h3>
+                                @for (line of info.lines; track line) {
+                                    @if (info.link && $index === 0) {
+                                        <a [href]="info.link" class="info-link">{{ line }}</a>
+                                    } @else {
+                                        <p>{{ line }}</p>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <!-- Social Media -->
+                <div class="social-media">
+                    <h3>Síguenos en redes sociales</h3>
+                    <div class="social-links">
+                        @for (social of socialLinks; track social.name) {
+                            <a [href]="social.url" class="social-link" [title]="social.name">
+                                <i class="fab" [class]="social.icon"></i>
+                            </a>
+                        }
+                    </div>
+                </div>
+
+                <!-- Map Placeholder -->
+                <div class="map-container">
+                    <div class="map-placeholder">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <p>Encuéntranos en la Plaza de Armas de Andahuaylas</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="faq-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Preguntas Frecuentes</h2>
+            <p>Respuestas rápidas a las consultas más comunes</p>
+        </div>
+
+        <div class="faq-grid">
+            <div class="faq-card">
+                <div class="faq-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h3>¿Cuánto tardan en responder?</h3>
+                <p>Respondemos todos los mensajes en un plazo máximo de 24 horas durante días laborables.</p>
+            </div>
+
+            <div class="faq-card">
+                <div class="faq-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <h3>¿Puedo hacer reservas por WhatsApp?</h3>
+                <p>Sí, puedes contactarnos por WhatsApp al +51 983 123 456 para hacer consultas y reservas.</p>
+            </div>
+
+            <div class="faq-card">
+                <div class="faq-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>¿Mis datos están seguros?</h3>
+                <p>Absolutamente. Toda la información que compartes con nosotros está protegida y es confidencial.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<app-footer></app-footer>

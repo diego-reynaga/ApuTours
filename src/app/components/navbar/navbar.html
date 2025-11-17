@@ -1,0 +1,40 @@
+<nav class="navbar" [class.scrolled]="isScrolled">
+    <div class="nav-container">
+        <a routerLink="/" class="nav-logo" (click)="closeMenu()">
+            <i class="fas fa-mountain"></i>
+            <span>ApuTours</span>
+        </a>
+        <div class="nav-menu" [class.active]="isMenuOpen">
+            @if (shouldShowLink('/')) {
+                <a routerLink="/" class="nav-link" (click)="closeMenu()">Inicio</a>
+            }
+            @if (shouldShowLink('/destinos')) {
+                <a routerLink="/destinos" class="nav-link" (click)="closeMenu()">Destinos</a>
+            }
+            @if (shouldShowLink('/gastronomia')) {
+                <a routerLink="/gastronomia" class="nav-link" (click)="closeMenu()">Gastronomía</a>
+            }
+            @if (shouldShowLink('/transporte')) {
+                <a routerLink="/transporte" class="nav-link" (click)="closeMenu()">Transporte</a>
+            }
+            @if (shouldShowLink('/hospedaje')) {
+                <a routerLink="/hospedaje" class="nav-link" (click)="closeMenu()">Hospedaje</a>
+            }
+            @if (shouldShowLink('/reservas')) {
+                <a routerLink="/reservas" class="nav-link" (click)="closeMenu()">Reservas</a>
+            }
+            @if (shouldShowLink('/contacto')) {
+                <a routerLink="/contacto" class="nav-link" (click)="closeMenu()">Contacto</a>
+            }
+            <button class="nav-btn-login" type="button">
+                <i class="fas fa-user"></i>
+                <span>Iniciar sesión</span>
+            </button>
+        </div>
+        <button class="nav-toggle" type="button" aria-label="Abrir menú" (click)="toggleMenu()" [class.active]="isMenuOpen">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+    </div>
+</nav>

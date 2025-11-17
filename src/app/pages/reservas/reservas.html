@@ -1,0 +1,390 @@
+<app-navbar></app-navbar>
+
+<!-- Hero Section -->
+<section class="reservas-hero">
+    <div class="container">
+        <div class="hero-pill">
+            <div class="pill-icon">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+            <span>Reserva fácil y segura</span>
+        </div>
+        <h1 class="page-title">
+            Sistema de Reservas
+            <span>Tu aventura comienza aquí</span>
+        </h1>
+        <p class="page-subtitle">
+            Proceso simple y rápido para reservar tu experiencia perfecta en Andahuaylas
+        </p>
+        <div class="hero-stats">
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value">100%</span>
+                    <span class="stat-label">Seguro</span>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value">24h</span>
+                    <span class="stat-label">Confirmación</span>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value">0%</span>
+                    <span class="stat-label">Comisión</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Reservation Type Selector -->
+<section class="reservation-type-selector">
+    <div class="container">
+        <h2 class="section-title">¿Qué deseas reservar?</h2>
+        <p class="section-subtitle">Selecciona el tipo de servicio que necesitas</p>
+        
+        <div class="type-selector-grid">
+            @for (type of reservationTypes; track type.id) {
+                <div 
+                    class="type-card"
+                    [class.active]="selectedType === type.id"
+                    (click)="selectType(type.id)">
+                    <div class="type-icon">
+                        <i class="fas" [class]="type.icon"></i>
+                    </div>
+                    <h3>{{ type.title }}</h3>
+                    <p>{{ type.subtitle }}</p>
+                    <div class="type-benefits">
+                        @for (benefit of type.benefits; track benefit) {
+                            <span>
+                                <i class="fas fa-check"></i>
+                                {{ benefit }}
+                            </span>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Reservation Form -->
+<section class="reservation-form-section">
+    <div class="container">
+        <div class="form-container">
+            <!-- Progress -->
+            <div class="form-progress">
+                <div class="progress-step" [class.active]="currentStep >= 1" [class.completed]="currentStep > 1">
+                    <span class="step-number">1</span>
+                    <span class="step-label">Detalles</span>
+                </div>
+                <div class="progress-line" [class.completed]="currentStep > 1"></div>
+                <div class="progress-step" [class.active]="currentStep >= 2" [class.completed]="currentStep > 2">
+                    <span class="step-number">2</span>
+                    <span class="step-label">Información</span>
+                </div>
+                <div class="progress-line" [class.completed]="currentStep > 2"></div>
+                <div class="progress-step" [class.active]="currentStep >= 3">
+                    <span class="step-number">3</span>
+                    <span class="step-label">Confirmación</span>
+                </div>
+            </div>
+
+            <!-- Step 1: Reservation Details -->
+            @if (currentStep === 1) {
+                <div class="form-step">
+                    <div class="step-header">
+                        <h2>
+                            <i class="fas fa-info-circle"></i>
+                            Detalles de tu Reserva
+                        </h2>
+                        <p>Especifica las fechas y número de participantes</p>
+                    </div>
+
+                    <form class="reservation-form">
+                        @if (selectedType === 'destination') {
+                            <div class="form-section">
+                                <h4><i class="fas fa-map-marker-alt"></i> Destino</h4>
+                                <div class="form-group">
+                                    <select [(ngModel)]="reservationDetails.destination" name="destination" required>
+                                        <option value="">Selecciona un destino</option>
+                                        @for (dest of destinations; track dest) {
+                                            <option [value]="dest">{{ dest }}</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        }
+
+                        <div class="form-section">
+                            <h4><i class="fas fa-calendar"></i> Fechas</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Fecha de Inicio</label>
+                                    <input 
+                                        type="date" 
+                                        [(ngModel)]="reservationDetails.startDate"
+                                        name="startDate"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Fecha de Fin</label>
+                                    <input 
+                                        type="date" 
+                                        [(ngModel)]="reservationDetails.endDate"
+                                        name="endDate"
+                                        required>
+                                </div>
+                            </div>
+                            @if (calculateTotalDays() > 0) {
+                                <div class="info-box">
+                                    <i class="fas fa-info-circle"></i>
+                                    Duración: <strong>{{ calculateTotalDays() }} día(s)</strong>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="form-section">
+                            <h4><i class="fas fa-users"></i> Participantes</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Adultos (mayores de 12 años)</label>
+                                    <select [(ngModel)]="reservationDetails.adults" name="adults" required>
+                                        <option [value]="1">1 Adulto</option>
+                                        <option [value]="2">2 Adultos</option>
+                                        <option [value]="3">3 Adultos</option>
+                                        <option [value]="4">4 Adultos</option>
+                                        <option [value]="5">5 Adultos</option>
+                                        <option [value]="6">6+ Adultos</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Niños (menores de 12 años)</label>
+                                    <select [(ngModel)]="reservationDetails.children" name="children">
+                                        <option [value]="0">Sin niños</option>
+                                        <option [value]="1">1 Niño</option>
+                                        <option [value]="2">2 Niños</option>
+                                        <option [value]="3">3 Niños</option>
+                                        <option [value]="4">4+ Niños</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (isStepValid(1)) {
+                            <div class="price-estimate">
+                                <div class="estimate-label">
+                                    <i class="fas fa-calculator"></i>
+                                    Precio Estimado
+                                </div>
+                                <div class="estimate-value">
+                                    S/ {{ calculateEstimatedPrice().toFixed(2) }}
+                                </div>
+                                <div class="estimate-note">
+                                    * Precio referencial, puede variar según servicios adicionales
+                                </div>
+                            </div>
+                        }
+
+                        <div class="form-actions">
+                            <button 
+                                type="button" 
+                                class="btn btn-primary"
+                                [disabled]="!isStepValid(1)"
+                                (click)="nextStep()">
+                                Continuar
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            }
+
+            <!-- Step 2: Personal Information -->
+            @if (currentStep === 2) {
+                <div class="form-step">
+                    <div class="step-header">
+                        <h2>
+                            <i class="fas fa-user-circle"></i>
+                            Información Personal
+                        </h2>
+                        <p>Ingresa tus datos para completar la reserva</p>
+                    </div>
+
+                    <form class="reservation-form">
+                        <div class="form-section">
+                            <h4><i class="fas fa-id-card"></i> Datos Personales</h4>
+                            <div class="form-group">
+                                <label>Nombre Completo</label>
+                                <input 
+                                    type="text" 
+                                    [(ngModel)]="personalInfo.fullName"
+                                    name="fullName"
+                                    placeholder="Tu nombre completo"
+                                    required>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Correo Electrónico</label>
+                                    <input 
+                                        type="email" 
+                                        [(ngModel)]="personalInfo.email"
+                                        name="email"
+                                        placeholder="tu@email.com"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Teléfono</label>
+                                    <input 
+                                        type="tel" 
+                                        [(ngModel)]="personalInfo.phone"
+                                        name="phone"
+                                        placeholder="+51 999 999 999"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>DNI o Documento de Identidad</label>
+                                <input 
+                                    type="text" 
+                                    [(ngModel)]="personalInfo.document"
+                                    name="document"
+                                    placeholder="Número de documento"
+                                    required>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h4><i class="fas fa-comment-alt"></i> Solicitudes Especiales (Opcional)</h4>
+                            <div class="form-group">
+                                <textarea 
+                                    [(ngModel)]="personalInfo.specialRequests"
+                                    name="specialRequests"
+                                    rows="4"
+                                    placeholder="¿Alguna necesidad especial? (dieta, movilidad, alergias, etc.)"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Resumen -->
+                        <div class="reservation-summary">
+                            <h4><i class="fas fa-clipboard-list"></i> Resumen de tu Reserva</h4>
+                            <div class="summary-grid">
+                                <div class="summary-item">
+                                    <span class="summary-label">Tipo:</span>
+                                    <span class="summary-value">{{ selectedType === 'package' ? 'Paquete Completo' : 
+                                                                       selectedType === 'destination' ? 'Solo Destinos' :
+                                                                       selectedType === 'accommodation' ? 'Solo Hospedaje' : 'Solo Transporte' }}</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Fechas:</span>
+                                    <span class="summary-value">{{ reservationDetails.startDate }} - {{ reservationDetails.endDate }}</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Participantes:</span>
+                                    <span class="summary-value">{{ getTotalParticipants() }} persona(s)</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Precio Total:</span>
+                                    <span class="summary-value total">S/ {{ calculateEstimatedPrice().toFixed(2) }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button 
+                                type="button" 
+                                class="btn btn-secondary"
+                                (click)="previousStep()">
+                                <i class="fas fa-arrow-left"></i>
+                                Atrás
+                            </button>
+                            <button 
+                                type="button" 
+                                class="btn btn-primary"
+                                [disabled]="!isStepValid(2) || isSubmitting"
+                                (click)="submitReservation()">
+                                @if (isSubmitting) {
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    Procesando...
+                                } @else {
+                                    <i class="fas fa-check-circle"></i>
+                                    Confirmar Reserva
+                                }
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            }
+
+            <!-- Step 3: Confirmation -->
+            @if (currentStep === 3 && reservationComplete) {
+                <div class="form-step">
+                    <div class="confirmation-success">
+                        <div class="success-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h2>¡Reserva Confirmada!</h2>
+                        <p>Tu reserva ha sido procesada exitosamente</p>
+                        
+                        <div class="confirmation-code">
+                            <span class="code-label">Código de Confirmación</span>
+                            <span class="code-value">{{ confirmationCode }}</span>
+                        </div>
+
+                        <div class="confirmation-info">
+                            <div class="info-item">
+                                <i class="fas fa-envelope"></i>
+                                <p>Hemos enviado un correo de confirmación a <strong>{{ personalInfo.email }}</strong></p>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-phone"></i>
+                                <p>Te contactaremos al <strong>{{ personalInfo.phone }}</strong> para coordinar detalles</p>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-calendar-check"></i>
+                                <p>Tu reserva está programada del <strong>{{ reservationDetails.startDate }}</strong> al <strong>{{ reservationDetails.endDate }}</strong></p>
+                            </div>
+                        </div>
+
+                        <div class="next-steps">
+                            <h3>Próximos Pasos</h3>
+                            <ol>
+                                <li>Recibirás un correo con los detalles completos de tu reserva</li>
+                                <li>Un agente te contactará en las próximas 24 horas para confirmar</li>
+                                <li>Podrás realizar el pago mediante transferencia o en oficina</li>
+                                <li>¡Prepárate para tu aventura en Andahuaylas!</li>
+                            </ol>
+                        </div>
+
+                        <div class="form-actions">
+                            <a routerLink="/" class="btn btn-secondary">
+                                <i class="fas fa-home"></i>
+                                Ir al Inicio
+                            </a>
+                            <button 
+                                type="button" 
+                                class="btn btn-primary"
+                                (click)="resetForm()">
+                                <i class="fas fa-plus"></i>
+                                Nueva Reserva
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<app-footer></app-footer>

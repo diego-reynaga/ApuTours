@@ -1,0 +1,154 @@
+<app-navbar></app-navbar>
+
+<section class="page-hero">
+  <div class="hero-media">
+    <div class="hero-bg"></div>
+    <div class="hero-accent"></div>
+  </div>
+  <div class="container">
+    <div class="breadcrumb">
+      <a routerLink="/"><i class="fas fa-home"></i> Inicio</a>
+      <span><i class="fas fa-chevron-right"></i></span>
+      <span>Destinos Turísticos</span>
+    </div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Andahuaylas · Apurímac</p>
+      <h1 class="page-title">Destinos Turísticos</h1>
+      <p class="page-subtitle">Descubre paisajes, cultura viva y aventuras de altura en la "tierra de los valles".</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" (click)="scrollToCatalog()"><i class="fas fa-compass"></i> Explorar destinos</button>
+        <button class="btn btn-outline" routerLink="/reservas"><i class="fas fa-route"></i> Armar itinerario</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-card" *ngFor="let stat of heroStats">
+          <div class="stat-icon"><i [class]="stat.icon"></i></div>
+          <div>
+            <p class="stat-label">{{ stat.label }}</p>
+            <p class="stat-value">{{ stat.value }}</p>
+            <span class="stat-helper">{{ stat.helper }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="filters-section">
+  <div class="container">
+    <div class="filters-container">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Buscar destinos..." [(ngModel)]="searchTerm">
+      </div>
+      <div class="filter-buttons">
+        <button
+          class="filter-btn"
+          *ngFor="let category of categories"
+          [class.active]="selectedCategory === category.key"
+          (click)="setCategory(category.key)"
+        >
+          <i [class]="category.icon"></i> {{ category.label }}
+        </button>
+      </div>
+      <div class="view-toggle">
+        <button class="view-btn" [class.active]="viewMode === 'grid'" (click)="setViewMode('grid')"><i class="fas fa-th"></i></button>
+        <button class="view-btn" [class.active]="viewMode === 'list'" (click)="setViewMode('list')"><i class="fas fa-list"></i></button>
+      </div>
+    </div>
+    <div class="results-summary">
+      <p><strong>{{ filteredDestinations.length }}</strong> destinos disponibles</p>
+      <div class="chips" *ngIf="hasActiveFilters">
+        <span class="chip" *ngIf="selectedCategory !== 'all'"><i class="fas fa-filter"></i> {{ selectedCategoryLabel }}</span>
+        <span class="chip" *ngIf="searchTerm"><i class="fas fa-search"></i> "{{ searchTerm }}"</span>
+        <button class="chip clear" type="button" (click)="clearFilters()"><i class="fas fa-times"></i> Limpiar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="destinations-catalog" id="catalogo">
+  <div class="container">
+    <div class="catalog-layout" [ngClass]="viewMode">
+      <div class="destinations-grid" [ngClass]="viewMode">
+        <article class="destination-card" *ngFor="let destination of filteredDestinations; trackBy: trackById" [ngClass]="viewMode">
+          <figure class="card-image">
+            <img [src]="destination.image" [alt]="destination.name" loading="lazy">
+            <div class="card-overlay">
+              <div class="card-badges">
+                <span
+                  class="badge"
+                  *ngFor="let category of destination.categories"
+                  [ngClass]="'badge-' + category"
+                >
+                  {{ getCategoryLabel(category) }}
+                </span>
+              </div>
+              <div class="card-actions">
+                <button class="action-btn" type="button" aria-label="Añadir a favoritos"><i class="far fa-heart"></i></button>
+                <button class="action-btn" type="button" aria-label="Compartir destino"><i class="fas fa-share-alt"></i></button>
+              </div>
+            </div>
+          </figure>
+          <div class="card-content">
+            <div class="card-header">
+              <h3 class="card-title">{{ destination.name }}</h3>
+              <div class="card-rating">
+                <span class="stars">
+                  <i *ngFor="let index of starIndexes" [ngClass]="getStarIcon(destination.rating, index)"></i>
+                </span>
+                <span class="rating-text">{{ destination.rating | number:'1.1-1' }} · {{ destination.reviews }} reseñas</span>
+              </div>
+            </div>
+            <p class="card-description">{{ destination.description }}</p>
+            <div class="card-features">
+              <div class="feature"><i class="fas fa-clock"></i><span>{{ destination.duration }}</span></div>
+              <div class="feature"><i class="fas fa-map-marker-alt"></i><span>{{ destination.distance }}</span></div>
+              <div class="feature"><i class="fas fa-signal"></i><span>{{ destination.difficulty }}</span></div>
+            </div>
+            <div class="card-highlights">
+              <span *ngFor="let highlight of destination.highlights"><i [class]="highlight.icon"></i> {{ highlight.label }}</span>
+            </div>
+            <div class="card-footer">
+              <div class="price-info">
+                <span class="price">S/ {{ destination.price | number:'1.0-0' }}</span>
+                <span class="price-label">por persona</span>
+              </div>
+              <div class="card-buttons">
+                <button class="btn btn-outline btn-sm" type="button"><i class="fas fa-info"></i> Detalles</button>
+                <button class="btn btn-primary btn-sm" type="button"><i class="fas fa-calendar-plus"></i> Reservar</button>
+              </div>
+            </div>
+          </div>
+        </article>
+        <div class="empty-state" *ngIf="!filteredDestinations.length">
+          <div class="empty-icon"><i class="fas fa-binoculars"></i></div>
+          <h3>No encontramos coincidencias</h3>
+          <p>Intenta con otro término o limpia los filtros para ver todos los destinos disponibles.</p>
+          <button class="btn btn-outline" type="button" (click)="clearFilters()"><i class="fas fa-sync"></i> Restablecer filtros</button>
+        </div>
+      </div>
+      <aside class="insights-panel">
+        <h3>Tips para planificar</h3>
+        <p class="panel-subtitle">Pequeñas pistas para aprovechar tu visita a Andahuaylas.</p>
+        <div class="insight-card" *ngFor="let insight of insightCards">
+          <div class="insight-icon"><i [class]="insight.icon"></i></div>
+          <div>
+            <span class="insight-tag">{{ insight.tag }}</span>
+            <h4>{{ insight.title }}</h4>
+            <p>{{ insight.body }}</p>
+          </div>
+        </div>
+        <div class="panel-cta">
+          <h4>¿Necesitas ayuda?</h4>
+          <p>Conversa con nuestros asesores para diseñar un circuito a tu medida.</p>
+          <a class="btn btn-primary btn-block" routerLink="/contacto"><i class="fas fa-headset"></i> Hablar con un asesor</a>
+        </div>
+      </aside>
+    </div>
+    <div class="load-more-container" *ngIf="filteredDestinations.length">
+      <button class="btn btn-outline btn-lg" type="button"><i class="fas fa-plus"></i> Cargar más destinos</button>
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>

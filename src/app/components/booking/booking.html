@@ -1,0 +1,74 @@
+<!-- Reservas Section -->
+<section id="reservas" class="booking">
+        <div class="container">
+                <h2 class="section-title">Reserva Tu Experiencia</h2>
+                <div class="booking-form-container">
+                        <form class="booking-form" id="bookingForm">
+                                <div class="form-group">
+                                        <label for="serviceType">Tipo de Servicio</label>
+                                        <select id="serviceType" name="serviceType" required>
+                                                <option value="">Selecciona un servicio</option>
+                                                <option value="tour">Tour Completo</option>
+                                                <option value="transport">Solo Transporte</option>
+                                                <option value="guide">Solo Guía</option>
+                                                <option value="accommodation">Hospedaje</option>
+                                        </select>
+                                </div>
+
+                                <div class="form-row">
+                                        <div class="form-group">
+                                                <label for="checkin">Fecha de Inicio</label>
+                                                <input type="date" id="checkin" name="checkin" required>
+                                        </div>
+                                        <div class="form-group">
+                                                <label for="checkout">Fecha de Fin</label>
+                                                <input type="date" id="checkout" name="checkout" required>
+                                        </div>
+                                </div>
+
+                                <div class="form-row">
+                                        <div class="form-group">
+                                                <label for="adults">Adultos</label>
+                                                <select id="adults" name="adults">
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5+">5+</option>
+                                                </select>
+                                        </div>
+                                        <div class="form-group">
+                                                <label for="children">Niños</label>
+                                                <select id="children" name="children">
+                                                        <option value="0">0</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4+">4+</option>
+                                                </select>
+                                        </div>
+                                </div>
+
+                                <div class="form-group">
+                                        <label for="destination">Destino Principal</label>
+                                        <select id="destination" name="destination">
+                                                <option value="">Selecciona un destino</option>
+                                                <option value="pacucha">Laguna de Pacucha</option>
+                                                <option value="sayhuite">Sayhuite</option>
+                                                <option value="incahuasi">Inca Huasi</option>
+                                                <option value="custom">Tour Personalizado</option>
+                                        </select>
+                                </div>
+
+                                <div class="form-group">
+                                        <label for="requirements">Requerimientos Especiales</label>
+                                        <textarea id="requirements" name="requirements" placeholder="Cuéntanos sobre necesidades especiales, preferencias alimentarias, etc."></textarea>
+                                </div>
+
+                                <button type="submit" class="submit-button">
+                                        <i class="fas fa-paper-plane"></i> Solicitar Reserva
+                                </button>
+                        </form>
+                </div>
+        </div>
+</section>

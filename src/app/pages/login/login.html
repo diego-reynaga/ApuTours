@@ -1,0 +1,345 @@
+<div class="login-container">
+    <!-- Lado Izquierdo - Imagen/Info -->
+    <div class="login-side">
+        <div class="side-content">
+            <a routerLink="/" class="logo">
+                <i class="fas fa-mountain"></i>
+                <span>ApuTours</span>
+            </a>
+            <h2>Descubre Andahuaylas</h2>
+            <p>Únete a miles de viajeros que han explorado la belleza de Apurímac con nosotros</p>
+            
+            <div class="features">
+                <div class="feature-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Reservas instantáneas</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Mejores precios garantizados</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Soporte 24/7</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lado Derecho - Formulario -->
+    <div class="login-form-side">
+        <div class="form-wrapper">
+            <!-- Botón de cierre -->
+            <a routerLink="/" class="close-btn" title="Volver al inicio">
+                <i class="fas fa-times"></i>
+            </a>
+
+            <!-- Alertas -->
+            @if (errorMessage()) {
+                <div class="alert alert-error">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>{{ errorMessage() }}</span>
+                </div>
+            }
+
+            @if (successMessage()) {
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle"></i>
+                    <span>{{ successMessage() }}</span>
+                </div>
+            }
+
+            <!-- Formulario de Login -->
+            @if (mode() === 'login') {
+                <div class="form-container">
+                    <div class="form-header">
+                        <h1>Iniciar Sesión</h1>
+                        <p>Accede a tu cuenta de ApuTours</p>
+                    </div>
+
+                    <form (ngSubmit)="onLogin()" class="auth-form">
+                        <div class="form-group">
+                            <label for="login-email">
+                                <i class="fas fa-envelope"></i>
+                                Correo Electrónico
+                            </label>
+                            <input 
+                                type="email" 
+                                id="login-email"
+                                [(ngModel)]="loginForm.email"
+                                name="email"
+                                placeholder="tu@email.com"
+                                required
+                                [disabled]="isSubmitting()">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="login-password">
+                                <i class="fas fa-lock"></i>
+                                Contraseña
+                            </label>
+                            <div class="password-input">
+                                <input 
+                                    [type]="showPassword() ? 'text' : 'password'"
+                                    id="login-password"
+                                    [(ngModel)]="loginForm.password"
+                                    name="password"
+                                    placeholder="Tu contraseña"
+                                    required
+                                    [disabled]="isSubmitting()">
+                                <button 
+                                    type="button" 
+                                    class="toggle-password"
+                                    (click)="togglePasswordVisibility()"
+                                    [disabled]="isSubmitting()">
+                                    <i class="fas" [class.fa-eye]="!showPassword()" [class.fa-eye-slash]="showPassword()"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button 
+                                type="button" 
+                                class="forgot-password-link"
+                                (click)="setMode('forgot-password')"
+                                [disabled]="isSubmitting()">
+                                ¿Olvidaste tu contraseña?
+                            </button>
+                        </div>
+
+                        <button 
+                            type="submit" 
+                            class="btn btn-primary"
+                            [disabled]="isSubmitting()">
+                            @if (isSubmitting()) {
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <span>Iniciando sesión...</span>
+                            } @else {
+                                <i class="fas fa-sign-in-alt"></i>
+                                <span>Iniciar Sesión</span>
+                            }
+                        </button>
+                    </form>
+
+                    <div class="divider">
+                        <span>o continúa con</span>
+                    </div>
+
+                    <div class="social-login">
+                        <button 
+                            type="button" 
+                            class="social-btn google"
+                            (click)="loginWithGoogle()"
+                            [disabled]="isSubmitting()">
+                            <i class="fab fa-google"></i>
+                            <span>Google</span>
+                        </button>
+                        <button 
+                            type="button" 
+                            class="social-btn facebook"
+                            (click)="loginWithFacebook()"
+                            [disabled]="isSubmitting()">
+                            <i class="fab fa-facebook-f"></i>
+                            <span>Facebook</span>
+                        </button>
+                    </div>
+
+                    <div class="form-footer">
+                        <p>¿No tienes cuenta? 
+                            <button 
+                                type="button" 
+                                class="link-btn"
+                                (click)="setMode('register')"
+                                [disabled]="isSubmitting()">
+                                Regístrate aquí
+                            </button>
+                        </p>
+                    </div>
+                </div>
+            }
+
+            <!-- Formulario de Registro -->
+            @if (mode() === 'register') {
+                <div class="form-container">
+                    <div class="form-header">
+                        <h1>Crear Cuenta</h1>
+                        <p>Únete a la comunidad de ApuTours</p>
+                    </div>
+
+                    <form (ngSubmit)="onRegister()" class="auth-form">
+                        <div class="form-group">
+                            <label for="register-name">
+                                <i class="fas fa-user"></i>
+                                Nombre Completo
+                            </label>
+                            <input 
+                                type="text" 
+                                id="register-name"
+                                [(ngModel)]="registerForm.name"
+                                name="name"
+                                placeholder="Tu nombre completo"
+                                required
+                                [disabled]="isSubmitting()">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="register-email">
+                                <i class="fas fa-envelope"></i>
+                                Correo Electrónico
+                            </label>
+                            <input 
+                                type="email" 
+                                id="register-email"
+                                [(ngModel)]="registerForm.email"
+                                name="email"
+                                placeholder="tu@email.com"
+                                required
+                                [disabled]="isSubmitting()">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="register-password">
+                                <i class="fas fa-lock"></i>
+                                Contraseña
+                            </label>
+                            <div class="password-input">
+                                <input 
+                                    [type]="showPassword() ? 'text' : 'password'"
+                                    id="register-password"
+                                    [(ngModel)]="registerForm.password"
+                                    name="password"
+                                    placeholder="Mínimo 8 caracteres"
+                                    required
+                                    minlength="8"
+                                    [disabled]="isSubmitting()">
+                                <button 
+                                    type="button" 
+                                    class="toggle-password"
+                                    (click)="togglePasswordVisibility()"
+                                    [disabled]="isSubmitting()">
+                                    <i class="fas" [class.fa-eye]="!showPassword()" [class.fa-eye-slash]="showPassword()"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="register-confirm-password">
+                                <i class="fas fa-lock"></i>
+                                Confirmar Contraseña
+                            </label>
+                            <input 
+                                [type]="showPassword() ? 'text' : 'password'"
+                                id="register-confirm-password"
+                                [(ngModel)]="registerForm.confirmPassword"
+                                name="confirmPassword"
+                                placeholder="Repite tu contraseña"
+                                required
+                                [disabled]="isSubmitting()">
+                        </div>
+
+                        <button 
+                            type="submit" 
+                            class="btn btn-primary"
+                            [disabled]="isSubmitting()">
+                            @if (isSubmitting()) {
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <span>Registrando...</span>
+                            } @else {
+                                <i class="fas fa-user-plus"></i>
+                                <span>Crear Cuenta</span>
+                            }
+                        </button>
+                    </form>
+
+                    <div class="divider">
+                        <span>o regístrate con</span>
+                    </div>
+
+                    <div class="social-login">
+                        <button 
+                            type="button" 
+                            class="social-btn google"
+                            (click)="loginWithGoogle()"
+                            [disabled]="isSubmitting()">
+                            <i class="fab fa-google"></i>
+                            <span>Google</span>
+                        </button>
+                        <button 
+                            type="button" 
+                            class="social-btn facebook"
+                            (click)="loginWithFacebook()"
+                            [disabled]="isSubmitting()">
+                            <i class="fab fa-facebook-f"></i>
+                            <span>Facebook</span>
+                        </button>
+                    </div>
+
+                    <div class="form-footer">
+                        <p>¿Ya tienes cuenta? 
+                            <button 
+                                type="button" 
+                                class="link-btn"
+                                (click)="setMode('login')"
+                                [disabled]="isSubmitting()">
+                                Inicia sesión
+                            </button>
+                        </p>
+                    </div>
+                </div>
+            }
+
+            <!-- Formulario de Recuperación de Contraseña -->
+            @if (mode() === 'forgot-password') {
+                <div class="form-container">
+                    <div class="form-header">
+                        <h1>Recuperar Contraseña</h1>
+                        <p>Te enviaremos un enlace para restablecer tu contraseña</p>
+                    </div>
+
+                    <form (ngSubmit)="onForgotPassword()" class="auth-form">
+                        <div class="form-group">
+                            <label for="forgot-email">
+                                <i class="fas fa-envelope"></i>
+                                Correo Electrónico
+                            </label>
+                            <input 
+                                type="email" 
+                                id="forgot-email"
+                                [(ngModel)]="forgotPasswordForm.email"
+                                name="email"
+                                placeholder="tu@email.com"
+                                required
+                                [disabled]="isSubmitting()">
+                        </div>
+
+                        <button 
+                            type="submit" 
+                            class="btn btn-primary"
+                            [disabled]="isSubmitting()">
+                            @if (isSubmitting()) {
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <span>Enviando...</span>
+                            } @else {
+                                <i class="fas fa-paper-plane"></i>
+                                <span>Enviar Enlace</span>
+                            }
+                        </button>
+                    </form>
+
+                    <div class="form-footer">
+                        <p>
+                            <button 
+                                type="button" 
+                                class="link-btn"
+                                (click)="setMode('login')"
+                                [disabled]="isSubmitting()">
+                                <i class="fas fa-arrow-left"></i>
+                                Volver a iniciar sesión
+                            </button>
+                        </p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

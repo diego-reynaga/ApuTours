@@ -26,10 +26,35 @@
             @if (shouldShowLink('/contacto')) {
                 <a routerLink="/contacto" class="nav-link" (click)="closeMenu()">Contacto</a>
             }
-            <button class="nav-btn-login" type="button">
-                <i class="fas fa-user"></i>
-                <span>Iniciar sesión</span>
-            </button>
+            
+            @if (!isAuthenticated()) {
+                <a routerLink="/login" class="nav-btn-login" (click)="closeMenu()">
+                    <i class="fas fa-user"></i>
+                    <span>Iniciar sesión</span>
+                </a>
+            } @else {
+                <div class="user-menu">
+                    <button class="user-btn" type="button" (click)="toggleMenu()">
+                        <i class="fas fa-user-circle"></i>
+                        <span>{{ currentUser()?.name || 'Usuario' }}</span>
+                    </button>
+                    <div class="user-dropdown" [class.active]="isMenuOpen">
+                        <div class="user-info">
+                            <strong>{{ currentUser()?.name }}</strong>
+                            <span>{{ currentUser()?.email }}</span>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a routerLink="/reservas" class="dropdown-item" (click)="closeMenu()">
+                            <i class="fas fa-calendar-check"></i>
+                            Mis Reservas
+                        </a>
+                        <button class="dropdown-item logout" type="button" (click)="logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Cerrar Sesión
+                        </button>
+                    </div>
+                </div>
+            }
         </div>
         <button class="nav-toggle" type="button" aria-label="Abrir menú" (click)="toggleMenu()" [class.active]="isMenuOpen">
             <span class="bar"></span>

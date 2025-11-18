@@ -6,6 +6,7 @@ import { Transporte } from './pages/transporte/transporte';
 import { Hospedaje } from './pages/hospedaje/hospedaje';
 import { Reservas } from './pages/reservas/reservas';
 import { Contacto } from './pages/contacto/contacto';
+import { Login } from './pages/login/login';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -15,5 +16,6 @@ export const routes: Routes = [
   { path: 'hospedaje', component: Hospedaje },
   { path: 'reservas', component: Reservas },
   { path: 'contacto', component: Contacto },
+  { path: 'login', component: Login },
   { path: '**', redirectTo: '' }
 ];

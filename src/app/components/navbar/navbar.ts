@@ -8,24 +8,27 @@ import { AuthService, User } from '../../services/auth.service';
   selector: 'app-navbar',
   imports: [RouterLink, CommonModule],
   templateUrl: './navbar.html',
-  styleUrl: './navbar.css',
+  styleUrls: ['./navbar.css'],
 })
 export class Navbar {
   isMenuOpen = false;
   isScrolled = false;
   currentRoute = '/';
   
-  // Señales reactivas del servicio de autenticación
-  currentUser: Signal<User | null>;
-  isAuthenticated: Signal<boolean>;
+  // Acceso a las señales reactivas del servicio de autenticación mediante getters
+  get currentUser(): Signal<User | null> {
+    return this.authService.currentUser;
+  }
+
+  get isAuthenticated(): Signal<boolean> {
+    return this.authService.isAuthenticated;
+  }
 
   constructor(
     private router: Router,
     public authService: AuthService
   ) {
-    // Inicializar señales reactivas
-    this.currentUser = this.authService.currentUser;
-    this.isAuthenticated = this.authService.isAuthenticated;
+    // Ya no es necesario inicializar las señales aquí: los getters acceden al servicio
 
     // Suscribirse a los eventos de navegación para detectar la ruta actual
     this.router.events

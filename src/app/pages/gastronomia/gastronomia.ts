@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { Navbar } from '../../components/navbar/navbar';
 import { Footer } from '../../components/footer/footer';
+import { GastronomiaService } from '../../services/gastronomia.service';
 
 type CategoryKey = 'all' | 'restaurantes' | 'bares' | 'cafeterias' | 'street-food';
 type PriceKey = 'all' | 'económico' | 'moderado' | 'premium';
@@ -46,7 +47,16 @@ interface ExperienceTip {
   templateUrl: './gastronomia.html',
   styleUrl: './gastronomia.css',
 })
-export class Gastronomia {
+export class Gastronomia implements OnInit {
+  private gastronomiaService?: GastronomiaService;
+
+  constructor() {
+    // El servicio se inyectará cuando esté configurado
+  }
+
+  ngOnInit(): void {
+    // Cargar desde Appwrite si el servicio está configurado
+  }
   protected readonly categories = [
     { key: 'all' as CategoryKey, label: 'Todos', icon: 'fas fa-list' },
     { key: 'restaurantes' as CategoryKey, label: 'Restaurantes', icon: 'fas fa-utensils' },

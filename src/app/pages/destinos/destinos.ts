@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Navbar } from '../../components/navbar/navbar';
 import { Footer } from '../../components/footer/footer';
+import { DestinosService } from '../../services/destinos.service';
 
 type CategoryKey = 'all' | 'natural' | 'arqueologico' | 'aventura' | 'cultural';
 
@@ -41,7 +42,16 @@ interface InsightCard {
   templateUrl: './destinos.html',
   styleUrl: './destinos.css',
 })
-export class Destinos {
+export class Destinos implements OnInit {
+  private destinosService?: DestinosService;
+
+  constructor() {
+    // El servicio se inyectará cuando esté configurado
+  }
+
+  ngOnInit(): void {
+    // Cargar desde Appwrite si el servicio está configurado
+  }
   protected readonly categories = [
     { key: 'all' as CategoryKey, label: 'Todos', icon: 'fas fa-globe' },
     { key: 'natural' as CategoryKey, label: 'Natural', icon: 'fas fa-leaf' },

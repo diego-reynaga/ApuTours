@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { Navbar } from '../../components/navbar/navbar';
 import { Footer } from '../../components/footer/footer';
+import { ReservasService } from '../../services/reservas.service';
+import { AuthService } from '../../services/auth.service';
 
 type ReservationType = 'package' | 'destination' | 'accommodation' | 'transport';
 
@@ -59,6 +61,12 @@ export class Reservas {
   isSubmitting = false;
   reservationComplete = false;
   confirmationCode = '';
+
+  constructor(
+    private reservasService: ReservasService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   reservationTypes: ReservationTypeOption[] = [
     {
@@ -159,20 +167,53 @@ export class Reservas {
     return total;
   }
 
-  submitReservation(): void {
+  async submitReservation(): Promise<void> {
     if (!this.isStepValid(2)) {
+      return;
+    }
+
+    // Verificar si el usuario está autenticado
+    const currentUser = this.authService.currentUser();
+    if (!currentUser) {
+      alert('Debes iniciar sesión para crear una reserva');
+      this.router.navigate(['/login']);
       return;
     }
 
     this.isSubmitting = true;
 
-    // Simular envío de reserva
-    setTimeout(() => {
-      this.confirmationCode = 'APU' + Date.now().toString().slice(-8);
+    try {
+      const reserva = await this.reservasService.createReserva({
+        userId: currentUser.$id,
+        tipo: this.selectedType,
+        destinoId: this.reservationDetails.destination,
+        destinoNombre: this.reservationDetails.destination || 'Sin especificar',
+        fechaInicio: this.reservationDetails.startDate,
+        fechaFin: this.reservationDetails.endDate,
+        adultos: this.reservationDetails.adults,
+        ninos: this.reservationDetails.children,
+        precioTotal: this.calculateEstimatedPrice(),
+        estado: 'pendiente',
+        nombreCompleto: this.personalInfo.fullName,
+        email: this.personalInfo.email,
+        telefono: this.personalInfo.phone,
+        documento: this.personalInfo.document,
+        solicitudesEspeciales: this.personalInfo.specialRequests
+      });
+
+      if (reserva) {
+        this.confirmationCode = reserva.codigoConfirmacion || '';
+        this.reservationComplete = true;
+        this.currentStep = 3;
+      } else {
+        alert('Error al crear la reserva. Por favor intenta nuevamente.');
+      }
+    } catch (error) {
+      console.error('Error submitting reservation:', error);
+      alert('Ocurrió un error al procesar tu reserva');
+    } finally {
       this.isSubmitting = false;
-      this.reservationComplete = true;
-      this.currentStep = 3;
-    }, 2000);
+    }
   }
 
   resetForm(): void {

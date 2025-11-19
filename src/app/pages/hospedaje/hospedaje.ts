@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { Navbar } from '../../components/navbar/navbar';
 import { Footer } from '../../components/footer/footer';
+import { HospedajeService } from '../../services/hospedaje.service';
 
 type CategoryKey = 'all' | 'hoteles' | 'hostales' | 'casas-rurales' | 'lodges';
 
@@ -40,7 +41,17 @@ interface TravelTip {
   templateUrl: './hospedaje.html',
   styleUrls: ['./hospedaje.css'],
 })
-export class Hospedaje {
+export class Hospedaje implements OnInit {
+  // Mantener datos locales para visualización inicial
+  private hospedajeService?: HospedajeService;
+
+  constructor() {
+    // El servicio se inyectará cuando esté configurado
+  }
+
+  ngOnInit(): void {
+    // Cargar desde Appwrite si el servicio está configurado
+  }
   protected readonly categories = [
     { key: 'all' as CategoryKey, label: 'Todos', icon: 'fas fa-list' },
     { key: 'hoteles' as CategoryKey, label: 'Hoteles', icon: 'fas fa-hotel' },

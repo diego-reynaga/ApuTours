@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, signal, computed, inject, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { Navbar } from '../../components/navbar/navbar';
 import { Footer } from '../../components/footer/footer';
-import { ReservasService } from '../../services/reservas.service';
+import { ReservasService, Reserva } from '../../services/reservas.service';
 import { AuthService } from '../../services/auth.service';
 
 type ReservationType = 'package' | 'destination' | 'accommodation' | 'transport';
@@ -35,14 +35,35 @@ interface ReservationTypeOption {
 
 @Component({
   selector: 'app-reservas',
+  standalone: true,
   imports: [CommonModule, FormsModule, RouterLink, Navbar, Footer],
   templateUrl: './reservas.html',
   styleUrl: './reservas.css',
 })
 export class Reservas {
-  currentStep = 1;
-  selectedType: ReservationType = 'package';
+  private reservasService = inject(ReservasService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
+  constructor() {
+    effect(() => {
+      const user = this.authService.currentUser();
+      // Solo autocompletar si el usuario existe y los campos están vacíos
+      if (user) {
+        if (!this.personalInfo.fullName) this.personalInfo.fullName = user.name;
+        if (!this.personalInfo.email) this.personalInfo.email = user.email;
+      }
+    });
+  }
+
+  // Signals for state management
+  currentStep = signal<number>(1);
+  selectedType = signal<ReservationType>('package');
+  isSubmitting = signal<boolean>(false);
+  reservationComplete = signal<boolean>(false);
+  confirmationCode = signal<string>('');
   
+  // Form Data (Plain objects for easier ngModel binding)
   reservationDetails: ReservationDetails = {
     startDate: '',
     endDate: '',
@@ -58,15 +79,34 @@ export class Reservas {
     specialRequests: ''
   };
 
-  isSubmitting = false;
-  reservationComplete = false;
-  confirmationCode = '';
+  // Computed values
+  totalDays = computed(() => {
+    const details = this.reservationDetails;
+    if (!details.startDate || !details.endDate) return 0;
+    
+    const start = new Date(details.startDate);
+    const end = new Date(details.endDate);
+    const diffTime = Math.abs(end.getTime() - start.getTime());
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  });
 
-  constructor(
-    private reservasService: ReservasService,
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  estimatedPrice = computed(() => {
+    const days = this.totalDays();
+    const details = this.reservationDetails;
+    const type = this.selectedType();
+    
+    const basePrice = type === 'package' ? 250 : 
+                      type === 'destination' ? 80 :
+                      type === 'accommodation' ? 120 : 60;
+    
+    return (basePrice * days * details.adults) + 
+           (basePrice * 0.5 * days * details.children);
+  });
+
+  totalParticipants = computed(() => {
+    const details = this.reservationDetails;
+    return details.adults + details.children;
+  });
 
   reservationTypes: ReservationTypeOption[] = [
     {
@@ -110,61 +150,41 @@ export class Reservas {
   ];
 
   selectType(type: ReservationType): void {
-    this.selectedType = type;
+    this.selectedType.set(type);
   }
 
   nextStep(): void {
-    if (this.isStepValid(this.currentStep)) {
-      this.currentStep++;
+    if (this.isStepValid(this.currentStep())) {
+      this.currentStep.update(v => v + 1);
     }
   }
 
   previousStep(): void {
-    if (this.currentStep > 1) {
-      this.currentStep--;
+    if (this.currentStep() > 1) {
+      this.currentStep.update(v => v - 1);
     }
   }
 
   isStepValid(step: number): boolean {
+    const details = this.reservationDetails;
+    const info = this.personalInfo;
+
     if (step === 1) {
       return !!(
-        this.reservationDetails.startDate &&
-        this.reservationDetails.endDate &&
-        this.reservationDetails.adults > 0
+        details.startDate &&
+        details.endDate &&
+        details.adults > 0
       );
     }
     if (step === 2) {
       return !!(
-        this.personalInfo.fullName &&
-        this.personalInfo.email &&
-        this.personalInfo.phone &&
-        this.personalInfo.document
+        info.fullName &&
+        info.email &&
+        info.phone &&
+        info.document
       );
     }
     return false;
-  }
-
-  calculateTotalDays(): number {
-    if (!this.reservationDetails.startDate || !this.reservationDetails.endDate) {
-      return 0;
-    }
-    const start = new Date(this.reservationDetails.startDate);
-    const end = new Date(this.reservationDetails.endDate);
-    const diffTime = Math.abs(end.getTime() - start.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
-  }
-
-  calculateEstimatedPrice(): number {
-    const days = this.calculateTotalDays();
-    const basePrice = this.selectedType === 'package' ? 250 : 
-                      this.selectedType === 'destination' ? 80 :
-                      this.selectedType === 'accommodation' ? 120 : 60;
-    
-    const total = (basePrice * days * this.reservationDetails.adults) + 
-                  (basePrice * 0.5 * days * this.reservationDetails.children);
-    
-    return total;
   }
 
   async submitReservation(): Promise<void> {
@@ -180,31 +200,34 @@ export class Reservas {
       return;
     }
 
-    this.isSubmitting = true;
+    this.isSubmitting.set(true);
 
     try {
+      const details = this.reservationDetails;
+      const info = this.personalInfo;
+
       const reserva = await this.reservasService.createReserva({
         userId: currentUser.$id,
-        tipo: this.selectedType,
-        destinoId: this.reservationDetails.destination,
-        destinoNombre: this.reservationDetails.destination || 'Sin especificar',
-        fechaInicio: this.reservationDetails.startDate,
-        fechaFin: this.reservationDetails.endDate,
-        adultos: this.reservationDetails.adults,
-        ninos: this.reservationDetails.children,
-        precioTotal: this.calculateEstimatedPrice(),
+        tipo: this.selectedType(),
+        destinoId: details.destination,
+        destinoNombre: details.destination || 'Sin especificar',
+        fechaInicio: details.startDate,
+        fechaFin: details.endDate,
+        adultos: details.adults,
+        ninos: details.children,
+        precioTotal: this.estimatedPrice(),
         estado: 'pendiente',
-        nombreCompleto: this.personalInfo.fullName,
-        email: this.personalInfo.email,
-        telefono: this.personalInfo.phone,
-        documento: this.personalInfo.document,
-        solicitudesEspeciales: this.personalInfo.specialRequests
+        nombreCompleto: info.fullName,
+        email: info.email,
+        telefono: info.phone,
+        documento: info.document,
+        solicitudesEspeciales: info.specialRequests
       });
 
       if (reserva) {
-        this.confirmationCode = reserva.codigoConfirmacion || '';
-        this.reservationComplete = true;
-        this.currentStep = 3;
+        this.confirmationCode.set(reserva.codigoConfirmacion || '');
+        this.reservationComplete.set(true);
+        this.currentStep.set(3);
       } else {
         alert('Error al crear la reserva. Por favor intenta nuevamente.');
       }
@@ -212,13 +235,13 @@ export class Reservas {
       console.error('Error submitting reservation:', error);
       alert('Ocurrió un error al procesar tu reserva');
     } finally {
-      this.isSubmitting = false;
+      this.isSubmitting.set(false);
     }
   }
 
   resetForm(): void {
-    this.currentStep = 1;
-    this.selectedType = 'package';
+    this.currentStep.set(1);
+    this.selectedType.set('package');
     this.reservationDetails = {
       startDate: '',
       endDate: '',
@@ -232,11 +255,7 @@ export class Reservas {
       document: '',
       specialRequests: ''
     };
-    this.reservationComplete = false;
-    this.confirmationCode = '';
-  }
-
-  getTotalParticipants(): number {
-    return this.reservationDetails.adults + this.reservationDetails.children;
+    this.reservationComplete.set(false);
+    this.confirmationCode.set('');
   }
 }

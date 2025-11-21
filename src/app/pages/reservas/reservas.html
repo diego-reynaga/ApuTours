@@ -2,46 +2,49 @@
 
 <!-- Hero Section -->
 <section class="reservas-hero">
+    <div class="hero-overlay"></div>
     <div class="container">
-        <div class="hero-pill">
-            <div class="pill-icon">
-                <i class="fas fa-calendar-check"></i>
+        <div class="hero-content">
+            <div class="hero-pill">
+                <div class="pill-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <span>Reserva fácil y segura</span>
             </div>
-            <span>Reserva fácil y segura</span>
-        </div>
-        <h1 class="page-title">
-            Sistema de Reservas
-            <span>Tu aventura comienza aquí</span>
-        </h1>
-        <p class="page-subtitle">
-            Proceso simple y rápido para reservar tu experiencia perfecta en Andahuaylas
-        </p>
-        <div class="hero-stats">
-            <div class="stat-item">
-                <div class="stat-icon">
-                    <i class="fas fa-shield-alt"></i>
+            <h1 class="page-title">
+                Sistema de Reservas
+                <span>Tu aventura comienza aquí</span>
+            </h1>
+            <p class="page-subtitle">
+                Proceso simple y rápido para reservar tu experiencia perfecta en Andahuaylas
+            </p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value">100%</span>
+                        <span class="stat-label">Seguro</span>
+                    </div>
                 </div>
-                <div class="stat-info">
-                    <span class="stat-value">100%</span>
-                    <span class="stat-label">Seguro</span>
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value">24h</span>
+                        <span class="stat-label">Confirmación</span>
+                    </div>
                 </div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-icon">
-                    <i class="fas fa-clock"></i>
-                </div>
-                <div class="stat-info">
-                    <span class="stat-value">24h</span>
-                    <span class="stat-label">Confirmación</span>
-                </div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-icon">
-                    <i class="fas fa-money-bill-wave"></i>
-                </div>
-                <div class="stat-info">
-                    <span class="stat-value">0%</span>
-                    <span class="stat-label">Comisión</span>
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value">0%</span>
+                        <span class="stat-label">Comisión</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -58,7 +61,7 @@
             @for (type of reservationTypes; track type.id) {
                 <div 
                     class="type-card"
-                    [class.active]="selectedType === type.id"
+                    [class.active]="selectedType() === type.id"
                     (click)="selectType(type.id)">
                     <div class="type-icon">
                         <i class="fas" [class]="type.icon"></i>
@@ -85,25 +88,25 @@
         <div class="form-container">
             <!-- Progress -->
             <div class="form-progress">
-                <div class="progress-step" [class.active]="currentStep >= 1" [class.completed]="currentStep > 1">
+                <div class="progress-step" [class.active]="currentStep() >= 1" [class.completed]="currentStep() > 1">
                     <span class="step-number">1</span>
                     <span class="step-label">Detalles</span>
                 </div>
-                <div class="progress-line" [class.completed]="currentStep > 1"></div>
-                <div class="progress-step" [class.active]="currentStep >= 2" [class.completed]="currentStep > 2">
+                <div class="progress-line" [class.completed]="currentStep() > 1"></div>
+                <div class="progress-step" [class.active]="currentStep() >= 2" [class.completed]="currentStep() > 2">
                     <span class="step-number">2</span>
                     <span class="step-label">Información</span>
                 </div>
-                <div class="progress-line" [class.completed]="currentStep > 2"></div>
-                <div class="progress-step" [class.active]="currentStep >= 3">
+                <div class="progress-line" [class.completed]="currentStep() > 2"></div>
+                <div class="progress-step" [class.active]="currentStep() >= 3">
                     <span class="step-number">3</span>
                     <span class="step-label">Confirmación</span>
                 </div>
             </div>
 
             <!-- Step 1: Reservation Details -->
-            @if (currentStep === 1) {
-                <div class="form-step">
+            @if (currentStep() === 1) {
+                <div class="form-step active">
                     <div class="step-header">
                         <h2>
                             <i class="fas fa-info-circle"></i>
@@ -113,7 +116,7 @@
                     </div>
 
                     <form class="reservation-form">
-                        @if (selectedType === 'destination') {
+                        @if (selectedType() === 'destination') {
                             <div class="form-section">
                                 <h4><i class="fas fa-map-marker-alt"></i> Destino</h4>
                                 <div class="form-group">
@@ -147,10 +150,10 @@
                                         required>
                                 </div>
                             </div>
-                            @if (calculateTotalDays() > 0) {
+                            @if (totalDays() > 0) {
                                 <div class="info-box">
                                     <i class="fas fa-info-circle"></i>
-                                    Duración: <strong>{{ calculateTotalDays() }} día(s)</strong>
+                                    Duración: <strong>{{ totalDays() }} día(s)</strong>
                                 </div>
                             }
                         </div>
@@ -189,7 +192,7 @@
                                     Precio Estimado
                                 </div>
                                 <div class="estimate-value">
-                                    S/ {{ calculateEstimatedPrice().toFixed(2) }}
+                                    S/ {{ estimatedPrice().toFixed(2) }}
                                 </div>
                                 <div class="estimate-note">
                                     * Precio referencial, puede variar según servicios adicionales
@@ -212,8 +215,8 @@
             }
 
             <!-- Step 2: Personal Information -->
-            @if (currentStep === 2) {
-                <div class="form-step">
+            @if (currentStep() === 2) {
+                <div class="form-step active">
                     <div class="step-header">
                         <h2>
                             <i class="fas fa-user-circle"></i>
@@ -282,9 +285,9 @@
                             <div class="summary-grid">
                                 <div class="summary-item">
                                     <span class="summary-label">Tipo:</span>
-                                    <span class="summary-value">{{ selectedType === 'package' ? 'Paquete Completo' : 
-                                                                       selectedType === 'destination' ? 'Solo Destinos' :
-                                                                       selectedType === 'accommodation' ? 'Solo Hospedaje' : 'Solo Transporte' }}</span>
+                                    <span class="summary-value">{{ selectedType() === 'package' ? 'Paquete Completo' : 
+                                                                       selectedType() === 'destination' ? 'Solo Destinos' :
+                                                                       selectedType() === 'accommodation' ? 'Solo Hospedaje' : 'Solo Transporte' }}</span>
                                 </div>
                                 <div class="summary-item">
                                     <span class="summary-label">Fechas:</span>
@@ -292,11 +295,11 @@
                                 </div>
                                 <div class="summary-item">
                                     <span class="summary-label">Participantes:</span>
-                                    <span class="summary-value">{{ getTotalParticipants() }} persona(s)</span>
+                                    <span class="summary-value">{{ totalParticipants() }} persona(s)</span>
                                 </div>
                                 <div class="summary-item">
                                     <span class="summary-label">Precio Total:</span>
-                                    <span class="summary-value total">S/ {{ calculateEstimatedPrice().toFixed(2) }}</span>
+                                    <span class="summary-value total">S/ {{ estimatedPrice().toFixed(2) }}</span>
                                 </div>
                             </div>
                         </div>
@@ -312,9 +315,9 @@
                             <button 
                                 type="button" 
                                 class="btn btn-primary"
-                                [disabled]="!isStepValid(2) || isSubmitting"
+                                [disabled]="!isStepValid(2) || isSubmitting()"
                                 (click)="submitReservation()">
-                                @if (isSubmitting) {
+                                @if (isSubmitting()) {
                                     <i class="fas fa-spinner fa-spin"></i>
                                     Procesando...
                                 } @else {
@@ -328,8 +331,8 @@
             }
 
             <!-- Step 3: Confirmation -->
-            @if (currentStep === 3 && reservationComplete) {
-                <div class="form-step">
+            @if (currentStep() === 3 && reservationComplete()) {
+                <div class="form-step active">
                     <div class="confirmation-success">
                         <div class="success-icon">
                             <i class="fas fa-check-circle"></i>
@@ -339,7 +342,7 @@
                         
                         <div class="confirmation-code">
                             <span class="code-label">Código de Confirmación</span>
-                            <span class="code-value">{{ confirmationCode }}</span>
+                            <span class="code-value">{{ confirmationCode() }}</span>
                         </div>
 
                         <div class="confirmation-info">

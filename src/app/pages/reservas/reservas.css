@@ -17,6 +17,11 @@
                 url('https://www.huillcaexpedition.com/images/blog/laguna-de-pacucha-historia-turismo-y-belleza-natural-en-apurimac-1737148745.jpg') center/cover;
     position: relative;
     overflow: hidden;
+    padding-top: 160px; /* Fix navbar overlap */
+    padding-bottom: 4rem;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
 }
 
 .reservas-hero::before {
@@ -64,6 +69,26 @@
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+
+.stat-icon i {
+    font-size: 1.5rem;
+    color: #fff;
 }
 
 .stat-item:hover {
@@ -71,12 +96,19 @@
     background: rgba(255, 255, 255, 0.25);
 }
 
-.stat-number {
+.stat-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stat-value {
     display: block;
     font-size: 2rem;
     font-weight: 700;
     color: #fff;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
+    line-height: 1.2;
 }
 
 .stat-label {
@@ -84,6 +116,7 @@
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    display: block;
 }
 
 /* Reservation Type Selector */
@@ -141,12 +174,16 @@
     width: 80px;
     height: 80px;
     margin: 0 auto 1.5rem;
-    background: var(--reservas-gradient);
+    background-color: #2c5aa0; /* Solid fallback */
+    background-image: var(--reservas-gradient);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 10px 20px rgba(44, 90, 160, 0.3);
 }
 
 .type-card:hover .type-icon {
@@ -154,8 +191,11 @@
 }
 
 .type-icon i {
-    font-size: 2rem;
-    color: #fff;
+    font-size: 2.5rem;
+    color: #ffffff !important;
+    z-index: 2;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3); /* Stronger shadow */
+    display: block; /* Ensure it takes space */
 }
 
 .type-card h3 {
@@ -229,6 +269,9 @@
     justify-content: center;
     gap: 1rem;
     position: relative;
+    background: transparent; /* Removed dark background */
+    padding: 2.5rem 1rem;
+    margin-bottom: 2rem;
 }
 
 .form-progress::before {
@@ -238,7 +281,7 @@
     left: 20%;
     right: 20%;
     height: 2px;
-    background: rgba(255, 255, 255, 0.3);
+    background: #e9ecef; /* Light gray line */
     z-index: 1;
 }
 
@@ -249,37 +292,67 @@
     gap: 0.5rem;
     position: relative;
     z-index: 2;
+    min-width: 80px;
 }
 
 .step-number {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
-    color: #fff;
+    background-color: #e9ecef;
+    color: #2c3e50; /* Dark blue-gray */
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 600;
+    font-weight: 800; /* Extra bold */
     transition: all 0.3s ease;
+    border: 2px solid #ced4da;
+    font-size: 1.2rem;
+    z-index: 2;
 }
 
 .progress-step.active .step-number {
-    background: #fff;
-    color: var(--reservas-primary);
-    transform: scale(1.1);
+    background-color: #2c5aa0; /* Solid fallback */
+    background-image: var(--reservas-gradient);
+    color: #ffffff !important;
+    border-color: transparent;
+    transform: scale(1.15);
+    box-shadow: 0 0 0 4px rgba(44, 90, 160, 0.2);
+}
+
+.progress-step.completed .step-number {
+    background-color: #27ae60; /* Solid fallback */
+    color: #ffffff !important;
+    border-color: transparent;
 }
 
 .step-label {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.85rem;
+    color: var(--reservas-secondary); /* Darker text for better visibility */
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    font-weight: 600;
+    text-align: center;
 }
 
 .progress-step.active .step-label {
-    color: #fff;
-    font-weight: 600;
+    color: var(--reservas-primary);
+    font-weight: 700;
+}
+
+/* Progress Line Fix */
+.progress-line {
+    flex: 1;
+    height: 2px;
+    background: #e9ecef;
+    margin-top: 20px;
+    max-width: 100px;
+    display: block;
+}
+
+.progress-line.completed {
+    background: var(--reservas-success);
+    box-shadow: none;
 }
 
 /* Form Steps */
@@ -296,6 +369,208 @@
 
 .form-step.active {
     display: block;
+}
+
+.step-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.step-header h2 {
+    color: var(--reservas-primary);
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.step-header h2 i {
+    color: var(--reservas-accent);
+}
+
+.step-header p {
+    color: #6c757d;
+    font-size: 1.1rem;
+}
+
+.price-estimate {
+    background: linear-gradient(to right, #f8f9fa, #fff);
+    border: 2px dashed var(--reservas-primary);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.estimate-label {
+    color: var(--reservas-secondary);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.estimate-value {
+    color: var(--reservas-primary);
+    font-size: 3rem;
+    font-weight: 800;
+    margin: 0.5rem 0;
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+}
+
+.estimate-note {
+    font-size: 0.85rem;
+    color: #6c757d;
+    font-style: italic;
+}
+
+.confirmation-success {
+    text-align: center;
+    padding: 1rem;
+}
+
+.success-icon {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 2rem;
+    background: var(--reservas-success);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 20px rgba(39, 174, 96, 0.3);
+    animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.success-icon i {
+    font-size: 3.5rem;
+    color: #fff;
+}
+
+@keyframes popIn {
+    0% { transform: scale(0); }
+    80% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.confirmation-code {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 15px;
+    margin: 2rem 0;
+    border: 2px solid #e9ecef;
+    position: relative;
+    overflow: hidden;
+}
+
+.confirmation-code::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: var(--reservas-gradient);
+}
+
+.code-label {
+    display: block;
+    color: #6c757d;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+}
+
+.code-value {
+    display: block;
+    color: var(--reservas-primary);
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: 3px;
+    font-family: monospace;
+}
+
+.confirmation-info {
+    display: grid;
+    gap: 1.5rem;
+    margin: 2.5rem 0;
+    text-align: left;
+}
+
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2rem;
+    padding: 1rem;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    border: 1px solid #f1f3f5;
+}
+
+.info-item i {
+    color: var(--reservas-primary);
+    font-size: 1.4rem;
+    background: rgba(44, 90, 160, 0.1);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.info-item p {
+    margin: 0;
+    color: var(--reservas-secondary);
+    line-height: 1.5;
+}
+
+.next-steps {
+    background: #fff8e1;
+    border-radius: 15px;
+    padding: 2rem;
+    margin: 2rem 0;
+    text-align: left;
+    border-left: 5px solid #ffc107;
+}
+
+.next-steps h3 {
+    color: #d35400;
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.next-steps ol {
+    padding-left: 1.5rem;
+    margin: 0;
+}
+
+.next-steps li {
+    margin-bottom: 0.8rem;
+    color: #7f8c8d;
+}
+
+.summary-grid {
+    display: grid;
+    gap: 1rem;
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 1px solid #e9ecef;
 }
 
 @keyframes stepSlideIn {
@@ -528,6 +803,71 @@
 .submit-btn:hover {
     transform: translateX(5px);
     box-shadow: 0 5px 15px rgba(44, 90, 160, 0.3);
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    font-size: 1rem;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background-color: #2c5aa0;
+    background-image: var(--reservas-gradient);
+    color: #ffffff !important;
+    box-shadow: 0 4px 15px rgba(44, 90, 160, 0.3);
+    border: none;
+    font-weight: 600;
+}
+
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(44, 90, 160, 0.4);
+    filter: brightness(1.1);
+}
+
+.btn-primary:disabled {
+    background-image: none;
+    background-color: #e9ecef;
+    color: #6c757d !important; /* Darker gray for visibility */
+    cursor: not-allowed;
+    box-shadow: none;
+    border: 1px solid #dee2e6;
+    opacity: 1;
+}
+
+.btn-secondary {
+    background: #f1f2f6;
+    color: var(--reservas-secondary);
+    border: 1px solid #dfe4ea;
+}
+
+.btn-secondary:hover {
+    background: #dfe4ea;
+    color: #2c3e50;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #f1f2f6;
+}
+
+.form-actions button:only-child {
+    margin-left: auto;
 }
 
 /* Sidebar Summary */
@@ -994,4 +1334,71 @@
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6); /* Increased opacity for better text contrast */
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    color: white;
+    max-width: 800px;
+}
+
+.hero-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.pill-icon {
+    width: 24px;
+    height: 24px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--reservas-primary);
+    font-size: 0.8rem;
+}
+
+.page-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.page-title span {
+    display: block;
+    font-size: 0.6em;
+    font-weight: 400;
+    opacity: 0.9;
+    margin-top: 0.5rem;
+}
+
+.page-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin-bottom: 2rem;
+    max-width: 600px;
+    line-height: 1.6;
 }

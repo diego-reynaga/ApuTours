@@ -12,10 +12,7 @@
             <span>Del hotel boutique al lodge en la montaña</span>
         </h1>
         <p class="page-subtitle">Espacios cuidados, hospitalidad auténtica y conexión con la naturaleza del valle.</p>
-        <div class="hero-meta">
-            <span><i class="fas fa-shield-alt"></i> Verificados y seguros</span>
-            <span><i class="fas fa-tag"></i> Precios transparentes</span>
-        </div>
+        
         <div class="hero-stats">
             @for (highlight of heroHighlights; track highlight.label) {
             <div class="stat-item">
@@ -30,64 +27,23 @@
     </div>
 </section>
 
-<section class="accommodation-search">
-    <div class="container">
-        <h2 class="section-title">
-            <i class="fas fa-search"></i>
-            Encuentra tu Hospedaje Ideal
-        </h2>
-        <div class="search-form-container">
-            <form class="search-form">
-                <div class="search-row">
-                    <div class="search-group">
-                        <label><i class="fas fa-calendar-check"></i> Check-in</label>
-                        <input type="date" required>
-                    </div>
-                    <div class="search-group">
-                        <label><i class="fas fa-calendar-times"></i> Check-out</label>
-                        <input type="date" required>
-                    </div>
-                    <div class="search-group">
-                        <label><i class="fas fa-users"></i> Huéspedes</label>
-                        <select>
-                            <option>1 Huésped</option>
-                            <option>2 Huéspedes</option>
-                            <option>3 Huéspedes</option>
-                            <option>4 Huéspedes</option>
-                            <option>5+ Huéspedes</option>
-                        </select>
-                    </div>
-                    <div class="search-group">
-                        <label><i class="fas fa-dollar-sign"></i> Presupuesto</label>
-                        <select>
-                            <option>Cualquier precio</option>
-                            <option>Hasta S/. 80</option>
-                            <option>S/. 80 - S/. 150</option>
-                            <option>S/. 150+</option>
-                        </select>
-                    </div>
-                </div>
-                <button type="submit" class="search-btn">
-                    <i class="fas fa-search"></i>
-                    Buscar Hospedajes
-                </button>
-            </form>
-        </div>
-    </div>
-</section>
-
 <section class="filters-section">
     <div class="container">
         <div class="filters-wrapper">
             <div class="search-inline">
                 <i class="fas fa-search"></i>
-                <input type="text" placeholder="Buscar por nombre o ubicación..." [(ngModel)]="searchTerm">
+                <input 
+                    type="text" 
+                    placeholder="Buscar por nombre o ubicación..." 
+                    [ngModel]="searchTerm()"
+                    (ngModelChange)="searchTerm.set($event)"
+                >
             </div>
             <div class="category-filters">
                 @for (category of categories; track category.key) {
                 <button
                     class="category-filter"
-                    [class.active]="selectedCategory === category.key"
+                    [class.active]="selectedCategory() === category.key"
                     (click)="setCategory(category.key)"
                 >
                     <i [class]="category.icon"></i> {{ category.label }}
@@ -95,7 +51,7 @@
                 }
             </div>
             <div class="filter-summary" *ngIf="hasActiveFilters()">
-                <p>{{ filteredAccommodations.length }} alojamientos encontrados</p>
+                <p>{{ filteredAccommodations().length }} alojamientos encontrados</p>
                 <button class="btn-clear" type="button" (click)="clearFilters()"><i class="fas fa-times"></i> Limpiar</button>
             </div>
         </div>
@@ -109,47 +65,60 @@
                 <p class="section-eyebrow">Dónde descansar</p>
                 <h2 class="section-title">Alojamientos Disponibles</h2>
             </div>
-            <p class="section-helper">{{ filteredAccommodations.length }} opciones · Actualizado hoy</p>
+            <p class="section-helper">{{ filteredAccommodations().length }} opciones · Actualizado hoy</p>
         </div>
-        <div class="accommodations-container">
-            @for (place of filteredAccommodations; track place.id) {
-            <article class="accommodation-card" [class.featured]="place.featured">
-                @if (place.featured) {
+
+        <!-- Loading State -->
+        <div *ngIf="isLoading()" class="loading-state">
+            <i class="fas fa-spinner fa-spin fa-2x"></i>
+            <p>Buscando los mejores lugares...</p>
+        </div>
+
+        <!-- Error State -->
+        <div *ngIf="error()" class="error-state">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p>{{ error() }}</p>
+        </div>
+
+        <div class="accommodations-container" *ngIf="!isLoading() && !error()">
+            @for (place of filteredAccommodations(); track place.$id) {
+            <article class="accommodation-card" [class.featured]="place.destacado">
+                @if (place.destacado) {
                 <span class="featured-badge">Destacado</span>
                 }
                 <div class="accommodation-image">
-                    <img [src]="place.image" [alt]="place.name" loading="lazy">
+                    <img [src]="place.imagen" [alt]="place.nombre" loading="lazy">
                     <span class="accommodation-rating"><i class="fas fa-star"></i> {{ place.rating | number:'1.1-1' }}</span>
                 </div>
                 <div class="accommodation-content">
                     <div class="accommodation-header">
                         <div>
-                            <h3 class="accommodation-title">{{ place.name }}</h3>
-                            <p class="accommodation-location"><i class="fas fa-map-marker-alt"></i> {{ place.location }}</p>
+                            <h3 class="accommodation-title">{{ place.nombre }}</h3>
+                            <p class="accommodation-location"><i class="fas fa-map-marker-alt"></i> {{ place.ubicacion }}</p>
                         </div>
-                        <span class="accommodation-category">{{ place.category | titlecase }}</span>
+                        <span class="accommodation-category">{{ place.categoria | titlecase }}</span>
                     </div>
-                    <p class="accommodation-description">{{ place.description }}</p>
+                    <p class="accommodation-description">{{ place.descripcion }}</p>
                     <div class="accommodation-amenities">
-                        @for (amenity of place.amenities.slice(0, 4); track amenity) {
+                        @for (amenity of getAmenities(place).slice(0, 4); track amenity) {
                         <span class="amenity-tag"><i class="fas fa-check"></i> {{ amenity }}</span>
                         }
                     </div>
                     <div class="accommodation-footer">
                         <div class="price-info">
                             <p class="price-label">Desde</p>
-                            <p class="price-amount">S/ {{ place.pricePerNight }}</p>
+                            <p class="price-amount">S/ {{ place.precioPorNoche }}</p>
                             <p class="price-unit">por noche</p>
                         </div>
                         <div class="action-buttons">
                             <button class="btn btn-outline btn-sm" type="button"><i class="fas fa-info-circle"></i> Ver más</button>
-                            <button class="btn btn-primary btn-sm" type="button"><i class="fas fa-calendar-check"></i> Reservar</button>
+                            <a routerLink="/reservas" class="btn btn-primary btn-sm"><i class="fas fa-calendar-check"></i> Reservar</a>
                         </div>
                     </div>
                 </div>
             </article>
             }
-            <div class="empty-state" *ngIf="!filteredAccommodations.length">
+            <div class="empty-state" *ngIf="filteredAccommodations().length === 0">
                 <div class="empty-icon"><i class="fas fa-bed"></i></div>
                 <h3>No encontramos alojamientos</h3>
                 <p>Ajusta los filtros o prueba con otro término de búsqueda.</p>

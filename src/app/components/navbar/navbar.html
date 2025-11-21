@@ -5,27 +5,13 @@
             <span>ApuTours</span>
         </a>
         <div class="nav-menu" [class.active]="isMenuOpen">
-            @if (shouldShowLink('/')) {
-                <a routerLink="/" class="nav-link" (click)="closeMenu()">Inicio</a>
-            }
-            @if (shouldShowLink('/destinos')) {
-                <a routerLink="/destinos" class="nav-link" (click)="closeMenu()">Destinos</a>
-            }
-            @if (shouldShowLink('/gastronomia')) {
-                <a routerLink="/gastronomia" class="nav-link" (click)="closeMenu()">Gastronomía</a>
-            }
-            @if (shouldShowLink('/transporte')) {
-                <a routerLink="/transporte" class="nav-link" (click)="closeMenu()">Transporte</a>
-            }
-            @if (shouldShowLink('/hospedaje')) {
-                <a routerLink="/hospedaje" class="nav-link" (click)="closeMenu()">Hospedaje</a>
-            }
-            @if (shouldShowLink('/reservas')) {
-                <a routerLink="/reservas" class="nav-link" (click)="closeMenu()">Reservas</a>
-            }
-            @if (shouldShowLink('/contacto')) {
-                <a routerLink="/contacto" class="nav-link" (click)="closeMenu()">Contacto</a>
-            }
+            <a routerLink="/" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMenu()">Inicio</a>
+            <a routerLink="/destinos" class="nav-link" routerLinkActive="active" (click)="closeMenu()">Destinos</a>
+            <a routerLink="/gastronomia" class="nav-link" routerLinkActive="active" (click)="closeMenu()">Gastronomía</a>
+            <a routerLink="/transporte" class="nav-link" routerLinkActive="active" (click)="closeMenu()">Transporte</a>
+            <a routerLink="/hospedaje" class="nav-link" routerLinkActive="active" (click)="closeMenu()">Hospedaje</a>
+            <a routerLink="/reservas" class="nav-link" routerLinkActive="active" (click)="closeMenu()">Reservas</a>
+            <a routerLink="/contacto" class="nav-link" routerLinkActive="active" (click)="closeMenu()">Contacto</a>
             
             @if (!isAuthenticated()) {
                 <a routerLink="/login" class="nav-btn-login" (click)="closeMenu()">

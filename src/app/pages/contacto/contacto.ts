@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Navbar } from '../../components/navbar/navbar';
 import { Footer } from '../../components/footer/footer';
+import { AuthService } from '../../services/auth.service';
 
 interface ContactForm {
   name: string;
@@ -26,6 +27,8 @@ interface ContactInfo {
   styleUrl: './contacto.css',
 })
 export class Contacto {
+  private authService = inject(AuthService);
+
   contactForm: ContactForm = {
     name: '',
     email: '',
@@ -33,6 +36,16 @@ export class Contacto {
     subject: '',
     message: ''
   };
+
+  constructor() {
+    effect(() => {
+      const user = this.authService.currentUser();
+      if (user) {
+        if (!this.contactForm.name) this.contactForm.name = user.name;
+        if (!this.contactForm.email) this.contactForm.email = user.email;
+      }
+    });
+  }
 
   isSubmitting = false;
   submitSuccess = false;

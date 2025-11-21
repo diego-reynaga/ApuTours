@@ -1,12 +1,12 @@
 import { Component, HostListener, computed, Signal } from '@angular/core';
-import { RouterLink, Router, NavigationEnd } from '@angular/router';
+import { RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs/operators';
 import { AuthService, User } from '../../services/auth.service';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink, RouterLinkActive, CommonModule],
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.css'],
 })
@@ -55,9 +55,9 @@ export class Navbar {
   }
 
   // Verificar si un link debe mostrarse (ocultar si es la ruta actual)
-  shouldShowLink(route: string): boolean {
-    return this.currentRoute !== route;
-  }
+  // shouldShowLink(route: string): boolean {
+  //   return this.currentRoute !== route;
+  // }
 
   // Cerrar sesión
   async logout(): Promise<void> {

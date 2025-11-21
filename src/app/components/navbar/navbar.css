@@ -1,0 +1,8 @@
+.nav-link.active {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.nav-link.active::after {
+    width: 100%;
+}

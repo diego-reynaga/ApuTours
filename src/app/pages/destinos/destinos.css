@@ -421,6 +421,22 @@
   color: var(--primary-color);
 }
 
+/* Price Info Fix */
+.price-info {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.price-info .price {
+  line-height: 1;
+}
+
+.price-info .price-label {
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
 .card-buttons {
   display: flex;
   gap: 0.75rem;

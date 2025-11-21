@@ -6,11 +6,7 @@
     <div class="hero-accent"></div>
   </div>
   <div class="container">
-    <div class="breadcrumb">
-      <a routerLink="/"><i class="fas fa-home"></i> Inicio</a>
-      <span><i class="fas fa-chevron-right"></i></span>
-      <span>Destinos Turísticos</span>
-    </div>
+    <!-- Breadcrumb removed -->
     <div class="hero-content">
       <p class="hero-eyebrow">Andahuaylas · Apurímac</p>
       <h1 class="page-title">Destinos Turísticos</h1>
@@ -38,28 +34,33 @@
     <div class="filters-container">
       <div class="search-box">
         <i class="fas fa-search"></i>
-        <input type="text" placeholder="Buscar destinos..." [(ngModel)]="searchTerm">
+        <input 
+          type="text" 
+          placeholder="Buscar destinos..." 
+          [ngModel]="searchTerm()"
+          (ngModelChange)="searchTerm.set($event)"
+        >
       </div>
       <div class="filter-buttons">
         <button
           class="filter-btn"
           *ngFor="let category of categories"
-          [class.active]="selectedCategory === category.key"
+          [class.active]="selectedCategory() === category.key"
           (click)="setCategory(category.key)"
         >
           <i [class]="category.icon"></i> {{ category.label }}
         </button>
       </div>
       <div class="view-toggle">
-        <button class="view-btn" [class.active]="viewMode === 'grid'" (click)="setViewMode('grid')"><i class="fas fa-th"></i></button>
-        <button class="view-btn" [class.active]="viewMode === 'list'" (click)="setViewMode('list')"><i class="fas fa-list"></i></button>
+        <button class="view-btn" [class.active]="viewMode() === 'grid'" (click)="setViewMode('grid')"><i class="fas fa-th"></i></button>
+        <button class="view-btn" [class.active]="viewMode() === 'list'" (click)="setViewMode('list')"><i class="fas fa-list"></i></button>
       </div>
     </div>
     <div class="results-summary">
-      <p><strong>{{ filteredDestinations.length }}</strong> destinos disponibles</p>
+      <p><strong>{{ filteredDestinations().length }}</strong> destinos disponibles</p>
       <div class="chips" *ngIf="hasActiveFilters">
-        <span class="chip" *ngIf="selectedCategory !== 'all'"><i class="fas fa-filter"></i> {{ selectedCategoryLabel }}</span>
-        <span class="chip" *ngIf="searchTerm"><i class="fas fa-search"></i> "{{ searchTerm }}"</span>
+        <span class="chip" *ngIf="selectedCategory() !== 'all'"><i class="fas fa-filter"></i> {{ selectedCategoryLabel }}</span>
+        <span class="chip" *ngIf="searchTerm()"><i class="fas fa-search"></i> "{{ searchTerm() }}"</span>
         <button class="chip clear" type="button" (click)="clearFilters()"><i class="fas fa-times"></i> Limpiar</button>
       </div>
     </div>
@@ -68,16 +69,30 @@
 
 <section class="destinations-catalog" id="catalogo">
   <div class="container">
-    <div class="catalog-layout" [ngClass]="viewMode">
-      <div class="destinations-grid" [ngClass]="viewMode">
-        <article class="destination-card" *ngFor="let destination of filteredDestinations; trackBy: trackById" [ngClass]="viewMode">
+    
+    <!-- Loading State -->
+    <div *ngIf="isLoading()" class="loading-state" style="text-align: center; padding: 3rem;">
+      <i class="fas fa-spinner fa-spin fa-2x"></i>
+      <p style="margin-top: 1rem;">Cargando destinos...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error()" class="error-state" style="text-align: center; padding: 3rem; color: var(--error);">
+      <i class="fas fa-exclamation-circle fa-2x"></i>
+      <p style="margin-top: 1rem;">{{ error() }}</p>
+      <button class="btn btn-outline" (click)="ngOnInit()">Intentar de nuevo</button>
+    </div>
+
+    <div class="catalog-layout" [ngClass]="viewMode()" *ngIf="!isLoading() && !error()">
+      <div class="destinations-grid" [ngClass]="viewMode()">
+        <article class="destination-card" *ngFor="let destination of filteredDestinations(); trackBy: trackById" [ngClass]="viewMode()">
           <figure class="card-image">
-            <img [src]="destination.image" [alt]="destination.name" loading="lazy">
+            <img [src]="destination.imagen" [alt]="destination.nombre" loading="lazy">
             <div class="card-overlay">
               <div class="card-badges">
                 <span
                   class="badge"
-                  *ngFor="let category of destination.categories"
+                  *ngFor="let category of destination.categorias"
                   [ngClass]="'badge-' + category"
                 >
                   {{ getCategoryLabel(category) }}
@@ -91,7 +106,7 @@
           </figure>
           <div class="card-content">
             <div class="card-header">
-              <h3 class="card-title">{{ destination.name }}</h3>
+              <h3 class="card-title">{{ destination.nombre }}</h3>
               <div class="card-rating">
                 <span class="stars">
                   <i *ngFor="let index of starIndexes" [ngClass]="getStarIcon(destination.rating, index)"></i>
@@ -99,18 +114,18 @@
                 <span class="rating-text">{{ destination.rating | number:'1.1-1' }} · {{ destination.reviews }} reseñas</span>
               </div>
             </div>
-            <p class="card-description">{{ destination.description }}</p>
+            <p class="card-description">{{ destination.descripcion }}</p>
             <div class="card-features">
-              <div class="feature"><i class="fas fa-clock"></i><span>{{ destination.duration }}</span></div>
-              <div class="feature"><i class="fas fa-map-marker-alt"></i><span>{{ destination.distance }}</span></div>
-              <div class="feature"><i class="fas fa-signal"></i><span>{{ destination.difficulty }}</span></div>
+              <div class="feature"><i class="fas fa-clock"></i><span>{{ destination.duracion }}</span></div>
+              <div class="feature"><i class="fas fa-map-marker-alt"></i><span>{{ destination.distancia }}</span></div>
+              <div class="feature"><i class="fas fa-signal"></i><span>{{ destination.dificultad }}</span></div>
             </div>
             <div class="card-highlights">
-              <span *ngFor="let highlight of destination.highlights"><i [class]="highlight.icon"></i> {{ highlight.label }}</span>
+              <span *ngFor="let highlight of getHighlights(destination)"><i [class]="highlight.icon"></i> {{ highlight.label }}</span>
             </div>
             <div class="card-footer">
               <div class="price-info">
-                <span class="price">S/ {{ destination.price | number:'1.0-0' }}</span>
+                <span class="price">S/ {{ destination.precio | number:'1.0-0' }}</span>
                 <span class="price-label">por persona</span>
               </div>
               <div class="card-buttons">
@@ -120,7 +135,7 @@
             </div>
           </div>
         </article>
-        <div class="empty-state" *ngIf="!filteredDestinations.length">
+        <div class="empty-state" *ngIf="!filteredDestinations().length">
           <div class="empty-icon"><i class="fas fa-binoculars"></i></div>
           <h3>No encontramos coincidencias</h3>
           <p>Intenta con otro término o limpia los filtros para ver todos los destinos disponibles.</p>
@@ -145,7 +160,7 @@
         </div>
       </aside>
     </div>
-    <div class="load-more-container" *ngIf="filteredDestinations.length">
+    <div class="load-more-container" *ngIf="filteredDestinations().length">
       <button class="btn btn-outline btn-lg" type="button"><i class="fas fa-plus"></i> Cargar más destinos</button>
     </div>
   </div>

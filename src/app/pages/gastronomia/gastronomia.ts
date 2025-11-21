@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { Navbar } from '../../components/navbar/navbar';
 import { Footer } from '../../components/footer/footer';
-import { GastronomiaService } from '../../services/gastronomia.service';
+import { GastronomiaService, Establecimiento } from '../../services/gastronomia.service';
 
 type CategoryKey = 'all' | 'restaurantes' | 'bares' | 'cafeterias' | 'street-food';
 type PriceKey = 'all' | 'económico' | 'moderado' | 'premium';
@@ -19,20 +19,6 @@ interface Dish {
   photo: string;
 }
 
-interface Establishment {
-  id: number;
-  name: string;
-  category: Exclude<CategoryKey, 'all'>;
-  priceLevel: Exclude<PriceKey, 'all'>;
-  description: string;
-  features: { icon: string; label: string }[];
-  specialties: string;
-  schedule: string;
-  location: string;
-  rating: number;
-  image: string;
-}
-
 interface ExperienceTip {
   id: number;
   icon: string;
@@ -43,20 +29,25 @@ interface ExperienceTip {
 
 @Component({
   selector: 'app-gastronomia',
+  standalone: true,
   imports: [CommonModule, FormsModule, RouterLink, Navbar, Footer],
   templateUrl: './gastronomia.html',
   styleUrl: './gastronomia.css',
 })
 export class Gastronomia implements OnInit {
-  private gastronomiaService?: GastronomiaService;
-
-  constructor() {
-    // El servicio se inyectará cuando esté configurado
-  }
+  private gastronomiaService = inject(GastronomiaService);
+  
+  // Signals del servicio
+  establecimientos = this.gastronomiaService.establecimientos;
+  isLoading = this.gastronomiaService.isLoading;
+  error = this.gastronomiaService.error;
 
   ngOnInit(): void {
-    // Cargar desde Appwrite si el servicio está configurado
+    if (this.establecimientos().length === 0) {
+      this.gastronomiaService.loadEstablecimientos();
+    }
   }
+
   protected readonly categories = [
     { key: 'all' as CategoryKey, label: 'Todos', icon: 'fas fa-list' },
     { key: 'restaurantes' as CategoryKey, label: 'Restaurantes', icon: 'fas fa-utensils' },
@@ -108,73 +99,6 @@ export class Gastronomia implements OnInit {
     }
   ];
 
-  protected readonly establishments: Establishment[] = [
-    {
-      id: 1,
-      name: 'Achiky Wasi',
-      category: 'restaurantes',
-      priceLevel: 'moderado',
-      description: 'Cocina de autor con insumos del valle. Carta degustación de 6 tiempos disponible.',
-      features: [
-        { icon: 'fas fa-wine-glass-alt', label: 'Maridaje' },
-        { icon: 'fas fa-music', label: 'Música en vivo' }
-      ],
-      specialties: 'Pachamanca contemporánea y postres con mashua.',
-      schedule: 'Lun-Dom 12:00 - 23:00',
-      location: 'Jr. Guillermo Billinghurst 315',
-      rating: 4.9,
-      image: 'https://images.unsplash.com/photo-1529042410759-befb1204b468?w=1200&q=80'
-    },
-    {
-      id: 2,
-      name: 'Tullpa Café',
-      category: 'cafeterias',
-      priceLevel: 'económico',
-      description: 'Cafés de altura, panes artesanales y brunches con productos del huerto.',
-      features: [
-        { icon: 'fas fa-wifi', label: 'Wi-Fi' },
-        { icon: 'fas fa-leaf', label: 'Veg-friendly' }
-      ],
-      specialties: 'Café geisha de Kishuará y sándwiches de trucha ahumada.',
-      schedule: 'Mar-Dom 08:00 - 21:00',
-      location: 'Av. Perú 210 - Talavera',
-      rating: 4.7,
-      image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=80'
-    },
-    {
-      id: 3,
-      name: 'Bar Ñusta',
-      category: 'bares',
-      priceLevel: 'premium',
-      description: 'Speakeasy inspirado en las lagunas místicas. Coctelería de autor con destilados ancestrales.',
-      features: [
-        { icon: 'fas fa-cocktail', label: 'Signature drinks' },
-        { icon: 'fas fa-headphones', label: 'DJ sets' }
-      ],
-      specialties: 'Cóctel "Lágrimas de Ñusta" y tablas de quesos locales.',
-      schedule: 'Jue-Sáb 18:00 - 02:00',
-      location: 'Pasaje Ayacucho 118',
-      rating: 4.8,
-      image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&q=80'
-    },
-    {
-      id: 4,
-      name: 'Qapchi Street',
-      category: 'street-food',
-      priceLevel: 'económico',
-      description: 'Colectivo gastronómico con puestos rotativos cada fin de semana.',
-      features: [
-        { icon: 'fas fa-truck', label: 'Food trucks' },
-        { icon: 'fas fa-guitar', label: 'Folklore' }
-      ],
-      specialties: 'Kapchi bowls, anticuchos y emolientes infusionados.',
-      schedule: 'Vie-Dom 17:00 - 00:00',
-      location: 'Malecón Chumbao',
-      rating: 4.5,
-      image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc835?w=1200&q=80'
-    }
-  ];
-
   protected readonly experienceTips: ExperienceTip[] = [
     {
       id: 1,
@@ -196,41 +120,81 @@ export class Gastronomia implements OnInit {
     }
   ];
 
-  protected searchTerm = '';
-  protected selectedCategory: CategoryKey = 'all';
-  protected selectedPrice: PriceKey = 'all';
+  // Estado local con signals
+  protected searchTerm = signal('');
+  protected selectedCategory = signal<CategoryKey>('all');
+  protected selectedPrice = signal<PriceKey>('all');
 
-  protected get filteredEstablishments(): Establishment[] {
-    const term = this.searchTerm.trim().toLowerCase();
-    return this.establishments.filter((place) => {
-      const matchesCategory = this.selectedCategory === 'all' || place.category === this.selectedCategory;
-      const matchesPrice = this.selectedPrice === 'all' || place.priceLevel === this.selectedPrice;
-      const matchesSearch = term
-        ? [place.name, place.description, place.specialties, place.location]
-            .join(' ')
-            .toLowerCase()
-            .includes(term)
-        : true;
+  // Establecimientos filtrados computados
+  protected filteredEstablishments = computed(() => {
+    const allEstablishments = this.establecimientos();
+    const term = this.searchTerm().trim().toLowerCase();
+    const category = this.selectedCategory();
+    const price = this.selectedPrice();
+
+    return allEstablishments.filter((place) => {
+      const matchesCategory = category === 'all' || place.categoria === category;
+      const matchesPrice = price === 'all' || place.nivelPrecio === price;
+      
+      const matchesSearch = !term || 
+        place.nombre.toLowerCase().includes(term) || 
+        place.descripcion.toLowerCase().includes(term) ||
+        place.especialidades.toLowerCase().includes(term) ||
+        place.ubicacion.toLowerCase().includes(term);
+
       return matchesCategory && matchesPrice && matchesSearch;
     });
-  }
+  });
 
   protected setCategory(key: CategoryKey): void {
-    this.selectedCategory = key;
+    this.selectedCategory.set(key);
   }
 
   protected setPrice(key: PriceKey): void {
-    this.selectedPrice = key;
+    this.selectedPrice.set(key);
   }
 
   protected clearFilters(): void {
-    this.selectedCategory = 'all';
-    this.selectedPrice = 'all';
-    this.searchTerm = '';
+    this.selectedCategory.set('all');
+    this.selectedPrice.set('all');
+    this.searchTerm.set('');
   }
 
-  protected hasActiveFilters(): boolean {
-    return this.selectedCategory !== 'all' || this.selectedPrice !== 'all' || !!this.searchTerm.trim();
+  protected hasActiveFilters = computed(() => {
+    return this.selectedCategory() !== 'all' || this.selectedPrice() !== 'all' || !!this.searchTerm().trim();
+  });
+  
+  // Helper para características
+  protected getFeatureIcon(feature: string): string {
+    const lower = feature.toLowerCase();
+    if (lower.includes('wifi') || lower.includes('internet')) return 'fas fa-wifi';
+    if (lower.includes('música') || lower.includes('music')) return 'fas fa-music';
+    if (lower.includes('vino') || lower.includes('maridaje')) return 'fas fa-wine-glass-alt';
+    if (lower.includes('veg') || lower.includes('vegetariano')) return 'fas fa-leaf';
+    if (lower.includes('cocktail') || lower.includes('tragos')) return 'fas fa-cocktail';
+    if (lower.includes('delivery')) return 'fas fa-motorcycle';
+    if (lower.includes('tarjeta') || lower.includes('pagos')) return 'fas fa-credit-card';
+    return 'fas fa-check';
   }
-
+  
+  protected getFeatures(place: Establecimiento): { icon: string; label: string }[] {
+    if (!place.caracteristicas) return [];
+    
+    // Si viene como string JSON
+    let features: string[] = [];
+    if (typeof place.caracteristicas === 'string') {
+      try {
+        features = JSON.parse(place.caracteristicas);
+      } catch {
+        features = [place.caracteristicas];
+      }
+    } else if (Array.isArray(place.caracteristicas)) {
+      features = place.caracteristicas;
+    }
+    
+    return features.map(f => ({
+      icon: this.getFeatureIcon(f),
+      label: f
+    }));
+  }
 }

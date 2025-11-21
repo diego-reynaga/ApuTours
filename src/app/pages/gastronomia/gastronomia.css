@@ -4,9 +4,9 @@
 
 /* Hero Section Gastronomía */
 .gastronomia-hero {
-    background: radial-gradient(circle at top, rgba(255, 255, 255, 0.15), transparent 55%),
-                linear-gradient(140deg, #ff7c6a 0%, #f05176 45%, #ff8e53 100%);
-    min-height: 65vh;
+    background: linear-gradient(120deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)),
+                url('https://images.unsplash.com/photo-1590947132387-155cc02f3212?q=80&w=2070&auto=format&fit=crop') center/cover;
+    min-height: 75vh;
     position: relative;
     overflow: hidden;
     display: flex;
@@ -17,99 +17,127 @@
 .gastronomia-hero .hero-overlay {
     position: absolute;
     inset: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="%23ffffff" opacity="0.08"/><circle cx="75" cy="75" r="1" fill="%23ffffff" opacity="0.08"/><circle cx="50" cy="10" r="0.5" fill="%23ffffff" opacity="0.08"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
-    animation: float 18s ease-in-out infinite;
+    background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.6) 100%);
 }
 
 .hero-content {
     position: relative;
     z-index: 2;
     padding: 4rem 2rem;
-    max-width: 960px;
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: center;
 }
 
 .hero-pill {
     display: inline-flex;
     align-items: center;
-    gap: 0.6rem;
-    padding: 0.5rem 1.25rem;
+    gap: 0.8rem;
+    padding: 0.6rem 1.5rem;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.18);
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    margin-bottom: 1.25rem;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    margin-bottom: 2rem;
     font-weight: 600;
-    letter-spacing: 0.08rem;
+    letter-spacing: 0.1rem;
     text-transform: uppercase;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 .pill-icon {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--primary-color);
     display: grid;
     place-items: center;
-    font-size: 0.95rem;
+    font-size: 1rem;
+    color: white;
+}
+
+.page-title {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.page-title span {
+    display: block;
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.9);
+    margin-top: 1rem;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+}
+
+.page-subtitle {
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto 2.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
 }
 
 .hero-meta {
     display: flex;
-    gap: 1.2rem;
+    justify-content: center;
+    gap: 1.5rem;
     flex-wrap: wrap;
-    margin-top: 1rem;
-    color: rgba(255, 255, 255, 0.9);
-    font-weight: 500;
+    margin-bottom: 3rem;
 }
 
 .hero-meta span {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-    padding: 0.35rem 0.85rem;
+    gap: 0.6rem;
+    padding: 0.5rem 1.2rem;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.16);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-}
-
-.page-title span {
-    display: block;
-    font-size: 1.25rem;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.85);
-    margin-top: 0.5rem;
+    font-size: 0.95rem;
 }
 
 .hero-stats {
     display: flex;
-    gap: 2rem;
-    margin-top: 2rem;
+    justify-content: center;
+    gap: 3rem;
     flex-wrap: wrap;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .stat-item {
     text-align: center;
-    background: rgba(255, 255, 255, 0.1);
-    padding: 1rem;
-    border-radius: 12px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    min-width: 120px;
+    min-width: 140px;
 }
 
 .stat-number {
     display: block;
-    font-size: 2rem;
-    font-weight: 700;
+    font-size: 2.5rem;
+    font-weight: 800;
     color: #fff;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.2rem;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    background: linear-gradient(to bottom, #fff, #e0e0e0);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .stat-label {
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.8);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
+    font-weight: 600;
 }
 
 /* Filtros y Búsqueda */
@@ -492,6 +520,11 @@
 .price-range {
     font-weight: 600;
     color: #28a745;
+    background: #e8f5e9;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    white-space: nowrap;
 }
 
 .establishment-action {
@@ -633,77 +666,72 @@
     color: var(--primary-color);
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .gastronomia-hero {
-        min-height: 50vh;
-        text-align: center;
-    }
-    
-    .hero-stats {
-        justify-content: center;
-    }
-    
-    .stat-item {
-        min-width: 100px;
-    }
-    
-    .filters-container {
-        padding: 0 1rem;
-    }
-    
-    .filter-buttons {
-        justify-content: flex-start;
-        overflow-x: auto;
-        padding-bottom: 0.5rem;
-    }
-    
-    .filter-btn {
-        white-space: nowrap;
-        flex-shrink: 0;
-    }
-    
-    .dishes-slider {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-    
-    .establishments-container {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-    
-    .recommendations-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .cta-content h2 {
-        font-size: 2rem;
-    }
-    
-    .cta-buttons {
-        flex-direction: column;
-        align-items: center;
-    }
+/* Estados de Carga y Error */
+.loading-state,
+.error-state {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    text-align: center;
 }
 
-@media (max-width: 480px) {
-    .search-box input {
-        font-size: 0.9rem;
-    }
-    
-    .filter-btn {
-        padding: 0.6rem 1rem;
-        font-size: 0.9rem;
-    }
-    
-    .establishment-content {
-        padding: 1rem;
-    }
-    
-    .recommendation-card {
-        padding: 1.5rem;
-    }
+.loading-state i {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.error-state i {
+    color: #dc3545;
+    margin-bottom: 1rem;
+}
+
+.error-state button {
+    margin-top: 1.5rem;
+    cursor: pointer;
+}
+
+/* Empty State */
+.empty-state {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    background: white;
+    border-radius: 20px;
+    border: 2px dashed #e9ecef;
+    text-align: center;
+}
+
+.empty-icon {
+    width: 80px;
+    height: 80px;
+    background: #f8f9fa;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 2rem;
+    color: #adb5bd;
+    margin-bottom: 1.5rem;
+}
+
+.empty-state h3 {
+    font-size: 1.5rem;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+    max-width: 400px;
 }
 
 /* Animaciones */

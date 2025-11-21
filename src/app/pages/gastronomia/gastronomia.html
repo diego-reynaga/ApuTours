@@ -32,13 +32,18 @@
         <div class="filters-container">
             <div class="search-box">
                 <i class="fas fa-search"></i>
-                <input type="text" placeholder="Buscar restaurantes, platos o bebidas..." [(ngModel)]="searchTerm">
+                <input 
+                    type="text" 
+                    placeholder="Buscar restaurantes, platos o bebidas..." 
+                    [ngModel]="searchTerm()"
+                    (ngModelChange)="searchTerm.set($event)"
+                >
             </div>
             <div class="filter-buttons">
                 @for (category of categories; track category.key) {
                 <button
                     class="filter-btn"
-                    [class.active]="selectedCategory === category.key"
+                    [class.active]="selectedCategory() === category.key"
                     (click)="setCategory(category.key)"
                 >
                     <i [class]="category.icon"></i> {{ category.label }}
@@ -49,7 +54,7 @@
                 @for (price of priceFilters; track price.key) {
                 <button
                     class="price-filter-btn"
-                    [class.active]="selectedPrice === price.key"
+                    [class.active]="selectedPrice() === price.key"
                     (click)="setPrice(price.key)"
                 >
                     {{ price.label }}
@@ -108,27 +113,41 @@
                 <p class="section-eyebrow">Dónde comer y brindar</p>
                 <h2 class="section-title">Restaurantes, bares y cafeterías</h2>
             </div>
-            <p class="section-helper">{{ filteredEstablishments.length }} espacios seleccionados · Actualizado semanalmente</p>
+            <p class="section-helper">{{ filteredEstablishments().length }} espacios seleccionados · Actualizado semanalmente</p>
         </div>
-        <div class="establishments-container">
-            @for (place of filteredEstablishments; track place.id) {
+
+        <!-- Loading State -->
+        <div *ngIf="isLoading()" class="loading-state" style="text-align: center; padding: 3rem;">
+            <i class="fas fa-spinner fa-spin fa-2x"></i>
+            <p style="margin-top: 1rem;">Cargando establecimientos...</p>
+        </div>
+
+        <!-- Error State -->
+        <div *ngIf="error()" class="error-state" style="text-align: center; padding: 3rem; color: var(--error);">
+            <i class="fas fa-exclamation-circle fa-2x"></i>
+            <p style="margin-top: 1rem;">{{ error() }}</p>
+            <button class="btn ghost" (click)="ngOnInit()">Intentar de nuevo</button>
+        </div>
+
+        <div class="establishments-container" *ngIf="!isLoading() && !error()">
+            @for (place of filteredEstablishments(); track place.$id) {
             <article class="establishment-card">
                 <div class="establishment-image">
-                    <img [src]="place.image" [alt]="place.name" loading="lazy">
-                    <span class="establishment-badge">{{ place.category | titlecase }}</span>
+                    <img [src]="place.imagen" [alt]="place.nombre" loading="lazy">
+                    <span class="establishment-badge">{{ place.categoria | titlecase }}</span>
                     <span class="establishment-rating"><i class="fas fa-star"></i> {{ place.rating | number:'1.1-1' }}</span>
                 </div>
                 <div class="establishment-content">
                     <div class="establishment-header">
                         <div>
-                            <h3 class="establishment-title">{{ place.name }}</h3>
-                            <p class="establishment-category">{{ place.specialties }}</p>
+                            <h3 class="establishment-title">{{ place.nombre }}</h3>
+                            <p class="establishment-category">{{ place.especialidades }}</p>
                         </div>
-                        <span class="price-range">{{ place.priceLevel | titlecase }}</span>
+                        <span class="price-range">{{ place.nivelPrecio | titlecase }}</span>
                     </div>
-                    <p class="establishment-description">{{ place.description }}</p>
+                    <p class="establishment-description">{{ place.descripcion }}</p>
                     <div class="establishment-features">
-                        @for (feature of place.features; track feature.label) {
+                        @for (feature of getFeatures(place); track feature.label) {
                         <span class="feature-tag">
                             <i [class]="feature.icon"></i> {{ feature.label }}
                         </span>
@@ -136,15 +155,15 @@
                     </div>
                     <div class="establishment-info">
                         <div>
-                            <p><i class="fas fa-map-marker-alt"></i> {{ place.location }}</p>
-                            <p><i class="fas fa-clock"></i> {{ place.schedule }}</p>
+                            <p><i class="fas fa-map-marker-alt"></i> {{ place.ubicacion }}</p>
+                            <p><i class="fas fa-clock"></i> {{ place.horario }}</p>
                         </div>
                         <a class="establishment-action" routerLink="/reservas"><i class="fas fa-calendar-plus"></i> Reservar</a>
                     </div>
                 </div>
             </article>
             }
-            <div class="empty-state" *ngIf="!filteredEstablishments.length">
+            <div class="empty-state" *ngIf="!filteredEstablishments().length">
                 <div class="empty-icon"><i class="fas fa-utensils"></i></div>
                 <h3>No encontramos coincidencias</h3>
                 <p>Prueba con otro término o ajusta las categorías y precios.</p>

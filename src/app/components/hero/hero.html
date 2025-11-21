@@ -1,13 +1,26 @@
 <!-- Hero Section -->
-<section id="inicio" class="hero">
+<section id="inicio" class="hero" style="background-image: linear-gradient(135deg, rgba(0, 61, 51, 0.7), rgba(212, 160, 23, 0.4)), url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Laguna_de_Pacucha_-_Andahuaylas.jpg/1200px-Laguna_de_Pacucha_-_Andahuaylas.jpg');">
     <div class="hero-content">
-        <h1 class="hero-title">Descubre Andahuaylas</h1>
-        <p class="hero-subtitle">La joya escondida de los Andes peruanos te espera</p>
-        <button class="cta-button" (click)="scrollToSection('destinos')">
-            <i class="fas fa-compass"></i> Explorar Destinos
-        </button>
+        <span class="hero-eyebrow">Bienvenidos a la Pradera de los Celajes</span>
+        <h1 class="hero-title">Descubre la Magia de Andahuaylas</h1>
+        <div class="hero-actions">
+            <button class="cta-button primary" (click)="scrollToSection('destinos')">
+                <i class="fas fa-compass"></i> Explorar Destinos
+            </button>
+        </div>
     </div>
-    <div class="hero-video">
-        <div class="video-overlay"></div>
+    <div class="scroll-indicator">
+        <span>Descubre más</span>
+        <i class="fas fa-chevron-down"></i>
+    </div>
+</section>
+
+<!-- Sub-Hero / Intro Section -->
+<section class="intro-section">
+    <div class="container">
+        <p class="intro-text">Donde las lagunas reflejan el cielo y la historia inca cobra vida.</p>
+        <button class="cta-button secondary-dark" (click)="scrollToSection('reservas')">
+            <i class="fas fa-calendar-check"></i> Planear Viaje
+        </button>
     </div>
 </section>

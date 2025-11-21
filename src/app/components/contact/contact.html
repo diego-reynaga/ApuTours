@@ -1,55 +1,89 @@
 <!-- Contacto Section -->
-<section id="contacto" class="contact">
-        <div class="container">
-                <h2 class="section-title">Contáctanos</h2>
-                <div class="contact-content">
-                        <div class="contact-info">
-                                <div class="contact-item">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <div>
-                                                <h4>Ubicación</h4>
-                                                <p>Plaza de Armas, Andahuaylas<br>Apurímac, Perú</p>
-                                        </div>
-                                </div>
-                                <div class="contact-item">
-                                        <i class="fas fa-phone"></i>
-                                        <div>
-                                                <h4>Teléfono</h4>
-                                                <p>+51 983 XXX XXX</p>
-                                        </div>
-                                </div>
-                                <div class="contact-item">
-                                        <i class="fas fa-envelope"></i>
-                                        <div>
-                                                <h4>Email</h4>
-                                                <p>info@andahuaylastours.com</p>
-                                        </div>
-                                </div>
-                                <div class="contact-item">
-                                        <i class="fas fa-clock"></i>
-                                        <div>
-                                                <h4>Horarios</h4>
-                                                <p>Lunes - Domingo<br>8:00 AM - 8:00 PM</p>
-                                        </div>
-                                </div>
-                        </div>
-                        <div class="contact-form">
-                                <form id="contactForm">
-                                        <div class="form-group">
-                                                <input type="text" name="name" placeholder="Tu nombre" required>
-                                        </div>
-                                        <div class="form-group">
-                                                <input type="email" name="email" placeholder="Tu email" required>
-                                        </div>
-                                        <div class="form-group">
-                                                <input type="tel" name="phone" placeholder="Tu teléfono">
-                                        </div>
-                                        <div class="form-group">
-                                                <textarea name="message" placeholder="Tu mensaje" rows="5" required></textarea>
-                                        </div>
-                                        <button type="submit" class="submit-button">Enviar Mensaje</button>
-                                </form>
-                        </div>
+<section id="contacto" class="contact-section">
+    <div class="container">
+        <div class="contact-wrapper">
+            <!-- Información de Contacto -->
+            <div class="contact-info-card">
+                <div class="info-header">
+                    <h3>Hablemos</h3>
+                    <p>Estamos listos para planificar tu próxima aventura en Andahuaylas.</p>
                 </div>
+                
+                <div class="info-items">
+                    <div class="info-item">
+                        <div class="icon-box">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="info-text">
+                            <h4>Visítanos</h4>
+                            <p>Plaza de Armas, Andahuaylas<br>Apurímac, Perú</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="icon-box">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="info-text">
+                            <h4>Llámanos</h4>
+                            <p>+51 983 123 456</p>
+                            <p class="sub-text">Lunes a Domingo, 8am - 8pm</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="icon-box">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="info-text">
+                            <h4>Escríbenos</h4>
+                            <p>info@aputours.com</p>
+                            <p class="sub-text">Respondemos en menos de 24h</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="social-connect">
+                    <h4>Síguenos</h4>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulario -->
+            <div class="contact-form-card">
+                <h3>Envíanos un mensaje</h3>
+                <form id="contactForm" class="modern-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Nombre completo</label>
+                            <input type="text" id="name" name="name" placeholder="Ej. Juan Pérez" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Teléfono</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+51 999 999 999">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Correo electrónico</label>
+                        <input type="email" id="email" name="email" placeholder="juan@ejemplo.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">¿En qué podemos ayudarte?</label>
+                        <textarea id="message" name="message" rows="4" placeholder="Cuéntanos sobre tu viaje ideal..." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">
+                        <span>Enviar Mensaje</span>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
         </div>
+    </div>
 </section>

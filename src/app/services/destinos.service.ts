@@ -42,16 +42,36 @@ export class DestinosService {
       this.isLoading.set(true);
       this.error.set(null);
       
+      console.log('🔄 Cargando destinos desde Appwrite...');
+      console.log('Database ID:', this.databaseId);
+      console.log('Collection ID:', this.collectionId);
+
       const response = await this.db.listDocuments(
         this.databaseId,
         this.collectionId,
         [Query.orderDesc('$createdAt'), Query.limit(100)]
       );
       
-      this.destinos.set(response.documents as unknown as Destino[]);
+      console.log('✅ Destinos cargados:', response.documents.length);
+
+      // Parsear categorías si vienen como string JSON
+      const documents = response.documents.map((doc: any) => {
+        let categorias = doc.categorias;
+        if (typeof categorias === 'string') {
+          try {
+            categorias = JSON.parse(categorias);
+          } catch (e) {
+            console.warn('Error parseando categorías para destino:', doc.nombre, e);
+            categorias = [categorias]; // Fallback si no es JSON válido
+          }
+        }
+        return { ...doc, categorias };
+      });
+
+      this.destinos.set(documents as unknown as Destino[]);
     } catch (error: any) {
       this.error.set(error.message || 'Error al cargar destinos');
-      console.error('Error loading destinos:', error);
+      console.error('❌ Error loading destinos:', error);
     } finally {
       this.isLoading.set(false);
     }

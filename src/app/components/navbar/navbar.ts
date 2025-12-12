@@ -24,6 +24,11 @@ export class Navbar {
     return this.authService.isAuthenticated;
   }
 
+  // Verificar si el usuario puede verificar comprobantes
+  get isVerificador(): boolean {
+    return this.authService.canVerifyComprobantes();
+  }
+
   constructor(
     private router: Router,
     public authService: AuthService

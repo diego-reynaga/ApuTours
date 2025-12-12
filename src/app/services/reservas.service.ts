@@ -6,13 +6,14 @@ import { ID, Query } from 'appwrite';
 export interface Reserva {
   $id?: string;
   userId: string;
-  tipo: 'package' | 'destination' | 'accommodation' | 'transport';
+  tipo: 'package' | 'destination' | 'accommodation' | 'transport' | 'gastronomy';
   destinoId?: string;
   destinoNombre?: string;
   fechaInicio: string;
   fechaFin: string;
   adultos: number;
   ninos: number;
+  precioUnitario: number;
   precioTotal: number;
   estado: 'pendiente' | 'confirmada' | 'cancelada';
   nombreCompleto: string;
@@ -85,8 +86,12 @@ export class ReservasService {
    */
   async createReserva(reserva: Omit<Reserva, '$id' | '$createdAt'>): Promise<Reserva | null> {
     try {
-      // Generar código de confirmación
-      const codigo = 'APU' + Date.now().toString().slice(-8);
+      // Generar código de confirmación de 10 caracteres alfanuméricos
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let codigo = 'APU';
+      for (let i = 0; i < 7; i++) {
+        codigo += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
       
       const response = await this.db.createDocument(
         this.databaseId,

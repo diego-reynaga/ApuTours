@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Navbar } from '../../components/navbar/navbar';
 import { Footer } from '../../components/footer/footer';
 import { AuthService } from '../../services/auth.service';
+import { ContactoService } from '../../services/contacto.service';
 
 interface ContactForm {
   name: string;
@@ -28,6 +29,7 @@ interface ContactInfo {
 })
 export class Contacto {
   private authService = inject(AuthService);
+  private contactoService = inject(ContactoService);
 
   contactForm: ContactForm = {
     name: '',
@@ -50,6 +52,7 @@ export class Contacto {
   isSubmitting = false;
   submitSuccess = false;
   submitError = false;
+  errorMessage = '';
 
   contactInfo: ContactInfo[] = [
     {
@@ -90,26 +93,51 @@ export class Contacto {
 
     this.isSubmitting = true;
     this.submitError = false;
+    this.errorMessage = '';
 
-    // Simular envío del formulario
-    setTimeout(() => {
+    // Enviar mensaje usando el servicio real
+    this.contactoService.enviarMensaje({
+      nombre: this.contactForm.name,
+      email: this.contactForm.email,
+      telefono: this.contactForm.phone,
+      asunto: this.contactForm.subject,
+      mensaje: this.contactForm.message
+    }).then(resultado => {
       this.isSubmitting = false;
-      this.submitSuccess = true;
       
-      // Resetear el formulario
-      this.contactForm = {
-        name: '',
-        email: '',
-        phone: '',
-        subject: '',
-        message: ''
-      };
+      if (resultado) {
+        this.submitSuccess = true;
+        
+        // Resetear el formulario
+        this.contactForm = {
+          name: '',
+          email: '',
+          phone: '',
+          subject: '',
+          message: ''
+        };
 
-      // Ocultar mensaje de éxito después de 5 segundos
+        // Ocultar mensaje de éxito después de 5 segundos
+        setTimeout(() => {
+          this.submitSuccess = false;
+        }, 5000);
+      } else {
+        this.submitError = true;
+        this.errorMessage = this.contactoService.error() || 'Error al enviar el mensaje';
+        
+        setTimeout(() => {
+          this.submitError = false;
+        }, 5000);
+      }
+    }).catch(error => {
+      this.isSubmitting = false;
+      this.submitError = true;
+      this.errorMessage = error.message || 'Error al enviar el mensaje';
+      
       setTimeout(() => {
-        this.submitSuccess = false;
+        this.submitError = false;
       }, 5000);
-    }, 1500);
+    });
   }
 
   isFormValid(): boolean {

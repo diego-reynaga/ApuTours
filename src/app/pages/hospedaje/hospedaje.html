@@ -50,10 +50,12 @@
                 </button>
                 }
             </div>
-            <div class="filter-summary" *ngIf="hasActiveFilters()">
+            @if (hasActiveFilters()) {
+            <div class="filter-summary">
                 <p>{{ filteredAccommodations().length }} alojamientos encontrados</p>
                 <button class="btn-clear" type="button" (click)="clearFilters()"><i class="fas fa-times"></i> Limpiar</button>
             </div>
+            }
         </div>
     </div>
 </section>
@@ -69,18 +71,23 @@
         </div>
 
         <!-- Loading State -->
-        <div *ngIf="isLoading()" class="loading-state">
+        @if (isLoading()) {
+        <div class="loading-state">
             <i class="fas fa-spinner fa-spin fa-2x"></i>
             <p>Buscando los mejores lugares...</p>
         </div>
+        }
 
         <!-- Error State -->
-        <div *ngIf="error()" class="error-state">
+        @if (error()) {
+        <div class="error-state">
             <i class="fas fa-exclamation-triangle"></i>
             <p>{{ error() }}</p>
         </div>
+        }
 
-        <div class="accommodations-container" *ngIf="!isLoading() && !error()">
+        @if (!isLoading() && !error()) {
+        <div class="accommodations-container">
             @for (place of filteredAccommodations(); track place.$id) {
             <article class="accommodation-card" [class.featured]="place.destacado">
                 @if (place.destacado) {
@@ -112,19 +119,26 @@
                         </div>
                         <div class="action-buttons">
                             <button class="btn btn-outline btn-sm" type="button"><i class="fas fa-info-circle"></i> Ver más</button>
-                            <a routerLink="/reservas" class="btn btn-primary btn-sm"><i class="fas fa-calendar-check"></i> Reservar</a>
+                            <a [routerLink]="['/reservas']" 
+                               [queryParams]="{tipo: 'accommodation', nombre: place.nombre, precio: place.precioPorNoche, id: place.$id}"
+                               class="btn btn-primary btn-sm btn-reservar">
+                               <i class="fas fa-calendar-check"></i> Reservar
+                            </a>
                         </div>
                     </div>
                 </div>
             </article>
             }
-            <div class="empty-state" *ngIf="filteredAccommodations().length === 0">
+            @if (filteredAccommodations().length === 0) {
+            <div class="empty-state">
                 <div class="empty-icon"><i class="fas fa-bed"></i></div>
                 <h3>No encontramos alojamientos</h3>
                 <p>Ajusta los filtros o prueba con otro término de búsqueda.</p>
                 <button class="btn btn-outline" type="button" (click)="clearFilters()"><i class="fas fa-sync"></i> Restablecer</button>
             </div>
+            }
         </div>
+        }
     </div>
 </section>
 

@@ -57,19 +57,24 @@
         </div>
 
         <!-- Loading State -->
-        <div *ngIf="isLoading()" class="loading-state">
+        @if (isLoading()) {
+        <div class="loading-state">
             <i class="fas fa-spinner fa-spin fa-2x"></i>
             <p>Buscando mejores rutas...</p>
         </div>
+        }
 
         <!-- Error State -->
-        <div *ngIf="error()" class="error-state">
+        @if (error()) {
+        <div class="error-state">
             <i class="fas fa-exclamation-triangle"></i>
             <p>{{ error() }}</p>
         </div>
+        }
 
         <!-- Transport Grid -->
-        <div class="transport-grid" *ngIf="!isLoading() && !error()">
+        @if (!isLoading() && !error()) {
+        <div class="transport-grid">
             @for (item of filteredTransportes(); track item.$id) {
             <article class="transport-card">
                 <div class="card-header">
@@ -78,7 +83,9 @@
                     </div>
                     <div class="transport-badges">
                         <span class="badge-type">{{ item.tipo | titlecase }}</span>
-                        <span class="badge-status" *ngIf="item.disponible">Disponible</span>
+                        @if (item.disponible) {
+                        <span class="badge-status">Disponible</span>
+                        }
                     </div>
                 </div>
                 
@@ -111,7 +118,9 @@
                         <span class="amount">{{ item.precio }}</span>
                         <span class="period">/ viaje</span>
                     </div>
-                    <a routerLink="/reservas" class="btn-book">
+                    <a routerLink="/reservas" 
+                       [queryParams]="{tipo: 'transport', nombre: item.nombre, precio: item.precio, id: item.$id}"
+                       class="btn-book">
                         Reservar <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
@@ -119,12 +128,15 @@
             }
             
             <!-- Empty State -->
-            <div class="empty-state" *ngIf="filteredTransportes().length === 0">
+            @if (filteredTransportes().length === 0) {
+            <div class="empty-state">
                 <div class="empty-icon"><i class="fas fa-route"></i></div>
                 <h3>No encontramos servicios</h3>
                 <p>Intenta cambiar los filtros o busca otra ruta.</p>
             </div>
+            }
         </div>
+        }
     </div>
 </section>
 

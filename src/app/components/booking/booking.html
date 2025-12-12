@@ -2,73 +2,46 @@
 <section id="reservas" class="booking">
         <div class="container">
                 <h2 class="section-title">Reserva Tu Experiencia</h2>
+                <p class="section-subtitle">Selecciona el tipo de servicio para comenzar tu aventura</p>
                 <div class="booking-form-container">
-                        <form class="booking-form" id="bookingForm">
+                        <form class="booking-form" (ngSubmit)="submitBooking()">
                                 <div class="form-group">
                                         <label for="serviceType">Tipo de Servicio</label>
-                                        <select id="serviceType" name="serviceType" required>
+                                        <select id="serviceType" name="serviceType" [(ngModel)]="formData.serviceType" required>
                                                 <option value="">Selecciona un servicio</option>
                                                 <option value="tour">Tour Completo</option>
                                                 <option value="transport">Solo Transporte</option>
-                                                <option value="guide">Solo Guía</option>
+                                                <option value="guide">Solo Guía / Destino</option>
                                                 <option value="accommodation">Hospedaje</option>
                                         </select>
                                 </div>
 
-                                <div class="form-row">
-                                        <div class="form-group">
-                                                <label for="checkin">Fecha de Inicio</label>
-                                                <input type="date" id="checkin" name="checkin" required>
-                                        </div>
-                                        <div class="form-group">
-                                                <label for="checkout">Fecha de Fin</label>
-                                                <input type="date" id="checkout" name="checkout" required>
-                                        </div>
-                                </div>
-
-                                <div class="form-row">
-                                        <div class="form-group">
-                                                <label for="adults">Adultos</label>
-                                                <select id="adults" name="adults">
-                                                        <option value="1">1</option>
-                                                        <option value="2">2</option>
-                                                        <option value="3">3</option>
-                                                        <option value="4">4</option>
-                                                        <option value="5+">5+</option>
-                                                </select>
-                                        </div>
-                                        <div class="form-group">
-                                                <label for="children">Niños</label>
-                                                <select id="children" name="children">
-                                                        <option value="0">0</option>
-                                                        <option value="1">1</option>
-                                                        <option value="2">2</option>
-                                                        <option value="3">3</option>
-                                                        <option value="4+">4+</option>
-                                                </select>
-                                        </div>
-                                </div>
-
-                                <div class="form-group">
-                                        <label for="destination">Destino Principal</label>
-                                        <select id="destination" name="destination">
-                                                <option value="">Selecciona un destino</option>
-                                                <option value="pacucha">Laguna de Pacucha</option>
-                                                <option value="sayhuite">Sayhuite</option>
-                                                <option value="incahuasi">Inca Huasi</option>
-                                                <option value="custom">Tour Personalizado</option>
-                                        </select>
-                                </div>
-
-                                <div class="form-group">
-                                        <label for="requirements">Requerimientos Especiales</label>
-                                        <textarea id="requirements" name="requirements" placeholder="Cuéntanos sobre necesidades especiales, preferencias alimentarias, etc."></textarea>
-                                </div>
-
-                                <button type="submit" class="submit-button">
-                                        <i class="fas fa-paper-plane"></i> Solicitar Reserva
+                                <button type="submit" class="submit-button" [disabled]="!formData.serviceType">
+                                        <i class="fas fa-arrow-right"></i> Continuar con la Reserva
                                 </button>
                         </form>
+                        
+                        <div class="quick-links">
+                                <p>O explora nuestros servicios:</p>
+                                <div class="quick-link-buttons">
+                                        <a routerLink="/destinos" class="quick-link">
+                                                <i class="fas fa-map-marked-alt"></i>
+                                                <span>Destinos</span>
+                                        </a>
+                                        <a routerLink="/hospedaje" class="quick-link">
+                                                <i class="fas fa-hotel"></i>
+                                                <span>Hospedaje</span>
+                                        </a>
+                                        <a routerLink="/transporte" class="quick-link">
+                                                <i class="fas fa-car"></i>
+                                                <span>Transporte</span>
+                                        </a>
+                                        <a routerLink="/gastronomia" class="quick-link">
+                                                <i class="fas fa-utensils"></i>
+                                                <span>Gastronomía</span>
+                                        </a>
+                                </div>
+                        </div>
                 </div>
         </div>
 </section>

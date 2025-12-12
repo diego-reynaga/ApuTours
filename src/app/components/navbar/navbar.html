@@ -5,13 +5,24 @@
             <span>ApuTours</span>
         </a>
         <div class="nav-menu" [class.active]="isMenuOpen">
-            <a routerLink="/" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMenu()">Inicio</a>
-            <a routerLink="/destinos" class="nav-link" routerLinkActive="active" (click)="closeMenu()">Destinos</a>
-            <a routerLink="/gastronomia" class="nav-link" routerLinkActive="active" (click)="closeMenu()">Gastronomía</a>
-            <a routerLink="/transporte" class="nav-link" routerLinkActive="active" (click)="closeMenu()">Transporte</a>
-            <a routerLink="/hospedaje" class="nav-link" routerLinkActive="active" (click)="closeMenu()">Hospedaje</a>
-            <a routerLink="/reservas" class="nav-link" routerLinkActive="active" (click)="closeMenu()">Reservas</a>
-            <a routerLink="/contacto" class="nav-link" routerLinkActive="active" (click)="closeMenu()">Contacto</a>
+            <!-- Navegación para usuarios normales -->
+            @if (!isVerificador) {
+                <a routerLink="/" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMenu()">Inicio</a>
+                <a routerLink="/destinos" class="nav-link" routerLinkActive="active" (click)="closeMenu()">Destinos</a>
+                <a routerLink="/gastronomia" class="nav-link" routerLinkActive="active" (click)="closeMenu()">Gastronomía</a>
+                <a routerLink="/transporte" class="nav-link" routerLinkActive="active" (click)="closeMenu()">Transporte</a>
+                <a routerLink="/hospedaje" class="nav-link" routerLinkActive="active" (click)="closeMenu()">Hospedaje</a>
+                <a routerLink="/reservas" class="nav-link" routerLinkActive="active" (click)="closeMenu()">Reservas</a>
+                <a routerLink="/contacto" class="nav-link" routerLinkActive="active" (click)="closeMenu()">Contacto</a>
+            }
+            
+            <!-- Navegación para verificadores -->
+            @if (isVerificador) {
+                <a routerLink="/verificar-comprobante" class="nav-link verificador-link" routerLinkActive="active" (click)="closeMenu()">
+                    <i class="fas fa-shield-alt"></i>
+                    Verificar Comprobantes
+                </a>
+            }
             
             @if (!isAuthenticated()) {
                 <a routerLink="/login" class="nav-btn-login" (click)="closeMenu()">
@@ -23,6 +34,9 @@
                     <button class="user-btn" type="button" (click)="toggleMenu()">
                         <i class="fas fa-user-circle"></i>
                         <span>{{ currentUser()?.name || 'Usuario' }}</span>
+                        @if (isVerificador) {
+                            <span class="badge-verificador">Verificador</span>
+                        }
                     </button>
                     <div class="user-dropdown" [class.active]="isMenuOpen">
                         <div class="user-info">
@@ -30,10 +44,12 @@
                             <span>{{ currentUser()?.email }}</span>
                         </div>
                         <div class="dropdown-divider"></div>
-                        <a routerLink="/reservas" class="dropdown-item" (click)="closeMenu()">
-                            <i class="fas fa-calendar-check"></i>
-                            Mis Reservas
-                        </a>
+                        @if (!isVerificador) {
+                            <a routerLink="/reservas" class="dropdown-item" (click)="closeMenu()">
+                                <i class="fas fa-calendar-check"></i>
+                                Mis Reservas
+                            </a>
+                        }
                         <button class="dropdown-item logout" type="button" (click)="logout()">
                             <i class="fas fa-sign-out-alt"></i>
                             Cerrar Sesión

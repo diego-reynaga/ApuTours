@@ -1,0 +1,325 @@
+<app-navbar></app-navbar>
+
+<!-- Hero Section -->
+<section class="verificar-hero">
+    <div class="container">
+        <div class="hero-pill">
+            <div class="pill-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <span>Sistema de Verificación</span>
+        </div>
+        <h1 class="page-title">
+            Verificar Comprobante
+            <span>Portal exclusivo para proveedores</span>
+        </h1>
+        <p class="page-subtitle">
+            Valida la autenticidad de los comprobantes de pago presentados por los clientes de ApuTours
+        </p>
+    </div>
+</section>
+
+<!-- Control de Acceso -->
+@if (isLoadingAuth()) {
+    <section class="access-control-section">
+        <div class="container">
+            <div class="loading-access">
+                <i class="fas fa-spinner fa-spin"></i>
+                <span>Verificando acceso...</span>
+            </div>
+        </div>
+    </section>
+} @else if (!isAuthenticated()) {
+    <section class="access-control-section">
+        <div class="container">
+            <div class="access-denied-card">
+                <div class="denied-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h2>Acceso Restringido</h2>
+                <p>Debes iniciar sesión para acceder a esta sección.</p>
+                <a routerLink="/login" class="btn-login">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Iniciar Sesión
+                </a>
+            </div>
+        </div>
+    </section>
+} @else if (!hasAccess()) {
+    <section class="access-control-section">
+        <div class="container">
+            <div class="access-denied-card">
+                <div class="denied-icon warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h2>Sin Permisos</h2>
+                <p>Tu cuenta no tiene permisos de verificador.</p>
+                <p class="small-text">Usuario actual: {{ currentUser()?.email }}</p>
+                <p class="small-text">Etiquetas: {{ currentUser()?.labels?.join(', ') || 'ninguna' }}</p>
+                <div class="contact-info">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Contacta al administrador para obtener el acceso de verificador.</span>
+                </div>
+                <a routerLink="/" class="btn-back">
+                    <i class="fas fa-home"></i>
+                    Volver al Inicio
+                </a>
+            </div>
+        </div>
+    </section>
+} @else {
+<!-- Verificación Section - Solo visible si tiene acceso -->
+<section class="verificacion-section">
+    <div class="container">
+        <div class="user-badge">
+            <i class="fas fa-user-shield"></i>
+            <span>Verificador: {{ currentUser()?.name }}</span>
+        </div>
+        
+        <div class="verificacion-card">
+            <!-- Formulario de Verificación -->
+            <div class="form-section">
+                <div class="form-header">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-qrcode"></i>
+                    </div>
+                    <h2>Ingresa el Código de Verificación</h2>
+                    <p>El código se encuentra en el comprobante del cliente (10 caracteres)</p>
+                </div>
+
+                <div class="codigo-input-wrapper">
+                    <input 
+                        type="text" 
+                        [(ngModel)]="codigoVerificacion"
+                        (input)="formatearCodigo()"
+                        placeholder="VER5TD6HMT"
+                        class="codigo-input"
+                        maxlength="10"
+                        [disabled]="isLoading()">
+                    
+                    <button 
+                        class="btn-verificar"
+                        (click)="verificar()"
+                        [disabled]="isLoading() || codigoVerificacion.length < 10">
+                        @if (isLoading()) {
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <span>Verificando...</span>
+                        } @else {
+                            <i class="fas fa-search"></i>
+                            <span>Verificar</span>
+                        }
+                    </button>
+                </div>
+
+                @if (verificacionRealizada()) {
+                    <button class="btn-limpiar" (click)="limpiarFormulario()">
+                        <i class="fas fa-redo"></i>
+                        Nueva Verificación
+                    </button>
+                }
+            </div>
+
+            <!-- Resultado de Verificación -->
+            @if (verificacionRealizada()) {
+                <div class="resultado-section" 
+                     [class.valido]="resultadoVerificacion()?.esValido"
+                     [class.invalido]="!resultadoVerificacion()?.esValido">
+                    
+                    <!-- Ícono de Resultado -->
+                    <div class="resultado-icon">
+                        @if (resultadoVerificacion()?.esValido) {
+                            <i class="fas fa-check-circle"></i>
+                        } @else {
+                            <i class="fas fa-times-circle"></i>
+                        }
+                    </div>
+
+                    <!-- Mensaje Principal -->
+                    <h3 class="resultado-titulo">
+                        {{ resultadoVerificacion()?.esValido ? '¡Comprobante Válido!' : 'Comprobante No Válido' }}
+                    </h3>
+                    <p class="resultado-mensaje">{{ resultadoVerificacion()?.mensaje }}</p>
+
+                    <!-- Detalles del Comprobante (si es válido) -->
+                    @if (resultadoVerificacion()?.comprobante; as comprobante) {
+                        <div class="comprobante-detalles">
+                            <div class="detalles-header">
+                                <h4>
+                                    <i class="fas fa-file-invoice"></i>
+                                    Detalles del Comprobante
+                                </h4>
+                                <span class="estado-badge" [class]="getEstadoClass(comprobante.estado)">
+                                    {{ getEstadoLabel(comprobante.estado) }}
+                                </span>
+                            </div>
+
+                            <div class="detalles-grid">
+                                <div class="detalle-item">
+                                    <span class="detalle-label">Código Comprobante</span>
+                                    <span class="detalle-value codigo">{{ comprobante.codigoComprobante }}</span>
+                                </div>
+                                <div class="detalle-item">
+                                    <span class="detalle-label">Tipo de Servicio</span>
+                                    <span class="detalle-value">{{ getTipoServicioLabel(comprobante.tipoServicio) }}</span>
+                                </div>
+                                <div class="detalle-item">
+                                    <span class="detalle-label">Proveedor</span>
+                                    <span class="detalle-value">{{ comprobante.proveedorNombre }}</span>
+                                </div>
+                                <div class="detalle-item">
+                                    <span class="detalle-label">Cliente</span>
+                                    <span class="detalle-value">{{ comprobante.clienteNombre }}</span>
+                                </div>
+                                <div class="detalle-item">
+                                    <span class="detalle-label">Documento</span>
+                                    <span class="detalle-value">{{ comprobante.clienteDocumento }}</span>
+                                </div>
+                                <div class="detalle-item">
+                                    <span class="detalle-label">Teléfono</span>
+                                    <span class="detalle-value">{{ comprobante.clienteTelefono }}</span>
+                                </div>
+                                <div class="detalle-item full-width">
+                                    <span class="detalle-label">Descripción del Servicio</span>
+                                    <span class="detalle-value">{{ comprobante.descripcionServicio }}</span>
+                                </div>
+                                <div class="detalle-item">
+                                    <span class="detalle-label">Fecha de Servicio</span>
+                                    <span class="detalle-value">{{ formatDate(comprobante.fechaServicio) }}</span>
+                                </div>
+                                <div class="detalle-item">
+                                    <span class="detalle-label">Personas</span>
+                                    <span class="detalle-value">{{ comprobante.cantidadPersonas }}</span>
+                                </div>
+                                <div class="detalle-item">
+                                    <span class="detalle-label">Fecha de Emisión</span>
+                                    <span class="detalle-value">{{ formatDate(comprobante.$createdAt) }}</span>
+                                </div>
+                                <div class="detalle-item">
+                                    <span class="detalle-label">Método de Pago</span>
+                                    <span class="detalle-value">{{ comprobante.metodoPago }}</span>
+                                </div>
+                            </div>
+
+                            <!-- Resumen Financiero -->
+                            <div class="resumen-financiero">
+                                <div class="resumen-linea">
+                                    <span>Subtotal</span>
+                                    <span>{{ formatCurrency(comprobante.subtotal) }}</span>
+                                </div>
+                                <div class="resumen-linea">
+                                    <span>IGV (18%)</span>
+                                    <span>{{ formatCurrency(comprobante.impuestos) }}</span>
+                                </div>
+                                @if (comprobante.descuento > 0) {
+                                    <div class="resumen-linea descuento">
+                                        <span>Descuento</span>
+                                        <span>-{{ formatCurrency(comprobante.descuento) }}</span>
+                                    </div>
+                                }
+                                <div class="resumen-linea total">
+                                    <span>TOTAL</span>
+                                    <span>{{ formatCurrency(comprobante.total) }}</span>
+                                </div>
+                            </div>
+
+                            <!-- Info de verificación previa -->
+                            @if (comprobante.estado === 'verificado') {
+                                <div class="verificacion-previa">
+                                    <i class="fas fa-info-circle"></i>
+                                    <div>
+                                        <strong>Verificado anteriormente</strong>
+                                        <p>Por: {{ comprobante.verificadoPor }} el {{ formatDate(comprobante.fechaVerificacion) }}</p>
+                                        @if (comprobante.notasVerificacion) {
+                                            <p class="notas">Notas: {{ comprobante.notasVerificacion }}</p>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Acciones del Proveedor -->
+                        @if (showAcciones()) {
+                            <div class="acciones-proveedor">
+                                <h4>
+                                    <i class="fas fa-tasks"></i>
+                                    Acciones del Proveedor
+                                </h4>
+
+                                <div class="accion-confirmar">
+                                    <label>Notas de verificación (opcional)</label>
+                                    <textarea 
+                                        [(ngModel)]="notasVerificacion"
+                                        placeholder="Ej: Cliente atendido, habitación 201..."
+                                        rows="2"></textarea>
+                                    <button 
+                                        class="btn-confirmar"
+                                        (click)="confirmarServicio()"
+                                        [disabled]="accionEnProceso()">
+                                        @if (accionEnProceso()) {
+                                            <i class="fas fa-spinner fa-spin"></i>
+                                        } @else {
+                                            <i class="fas fa-check"></i>
+                                        }
+                                        Confirmar Servicio Prestado
+                                    </button>
+                                </div>
+
+                                <div class="separador">
+                                    <span>o</span>
+                                </div>
+
+                                <div class="accion-rechazar">
+                                    <label>Motivo del rechazo (requerido)</label>
+                                    <textarea 
+                                        [(ngModel)]="motivoRechazo"
+                                        placeholder="Indique el motivo del rechazo..."
+                                        rows="2"></textarea>
+                                    <button 
+                                        class="btn-rechazar"
+                                        (click)="rechazarComprobante()"
+                                        [disabled]="accionEnProceso() || !motivoRechazo">
+                                        @if (accionEnProceso()) {
+                                            <i class="fas fa-spinner fa-spin"></i>
+                                        } @else {
+                                            <i class="fas fa-times"></i>
+                                        }
+                                        Rechazar Comprobante
+                                    </button>
+                                </div>
+                            </div>
+                        }
+
+                        <!-- Mensaje de Acción Completada -->
+                        @if (accionCompletada()) {
+                            <div class="accion-mensaje" [class.exito]="mensajeAccion().includes('✅')" [class.error]="mensajeAccion().includes('❌') || mensajeAccion().includes('⛔')">
+                                {{ mensajeAccion() }}
+                            </div>
+                        }
+                    }
+                </div>
+            }
+        </div>
+
+        <!-- Información Adicional -->
+        <div class="info-adicional">
+            <div class="info-card">
+                <i class="fas fa-question-circle"></i>
+                <h3>¿Cómo funciona?</h3>
+                <p>Cada reserva genera un código único de 12 caracteres. El cliente presenta este código al momento de usar el servicio. Usted lo verifica aquí y confirma la prestación del servicio.</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-lock"></i>
+                <h3>Seguridad</h3>
+                <p>Cada comprobante tiene un hash de seguridad que garantiza que no ha sido alterado. Si detecta alguna irregularidad, rechace el comprobante.</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-headset"></i>
+                <h3>¿Problemas?</h3>
+                <p>Si tiene dudas sobre un comprobante, contáctenos al +51 983 123 456 o escriba a proveedores@aputours.com</p>
+            </div>
+        </div>
+    </div>
+</section>
+}
+
+<app-footer></app-footer>

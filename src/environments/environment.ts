@@ -10,6 +10,11 @@ export const environment: {
     hospedajes: string;
     gastronomia: string;
     transportes: string;
+    contactos: string;
+    comprobantes: string;
+  };
+  appwriteFunctions: {
+    sendContactEmailFunctionId: string;
   };
 } = {
   appwriteEndpoint: 'https://sfo.cloud.appwrite.io/v1',
@@ -23,6 +28,13 @@ export const environment: {
     reservas: 'reservas_coll',
     hospedajes: 'hospedajes_coll',
     gastronomia: 'gastronomia_coll',
-    transportes: 'transportes_coll'
+    transportes: 'transportes_coll',
+    contactos: 'contactos_coll',
+    comprobantes: 'comprobantes_coll'
+  },
+  // Appwrite Functions (NO poner API keys aquí)
+  appwriteFunctions: {
+    // ID de la Function que envía correos de contacto
+    sendContactEmailFunctionId: 'send-contact-email'
   }
 };

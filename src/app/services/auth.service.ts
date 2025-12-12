@@ -2,10 +2,13 @@ import { Injectable, signal } from '@angular/core';
 import { Client, Account, ID, Models } from 'appwrite';
 import { environment } from '../../environments/environment';
 
+export type UserLabel = 'verificador' | 'admin' | 'premium';
+
 export interface User {
   $id: string;
   name: string;
   email: string;
+  labels: string[];
 }
 
 @Injectable({
@@ -38,10 +41,12 @@ export class AuthService {
     try {
       this.isLoading.set(true);
       const user = await this.account.get();
+      
       this.currentUser.set({
         $id: user.$id,
         name: user.name,
-        email: user.email
+        email: user.email,
+        labels: user.labels || []
       });
       this.isAuthenticated.set(true);
     } catch (error) {
@@ -50,6 +55,35 @@ export class AuthService {
     } finally {
       this.isLoading.set(false);
     }
+  }
+
+  /**
+   * Verificar si el usuario tiene un label específico
+   */
+  hasLabel(label: UserLabel): boolean {
+    const user = this.currentUser();
+    return user?.labels?.includes(label) || false;
+  }
+
+  /**
+   * Verificar si el usuario es verificador (tiene label 'verificador')
+   */
+  isVerificador(): boolean {
+    return this.hasLabel('verificador');
+  }
+
+  /**
+   * Verificar si el usuario es admin
+   */
+  isAdmin(): boolean {
+    return this.hasLabel('admin');
+  }
+
+  /**
+   * Verificar si el usuario puede verificar comprobantes
+   */
+  canVerifyComprobantes(): boolean {
+    return this.isVerificador() || this.isAdmin();
   }
 
   /**
@@ -153,7 +187,8 @@ export class AuthService {
       this.currentUser.set({
         $id: user.$id,
         name: user.name,
-        email: user.email
+        email: user.email,
+        labels: user.labels || []
       });
     } catch (error: any) {
       throw new Error(error.message || 'Error al actualizar nombre');
@@ -169,7 +204,8 @@ export class AuthService {
       this.currentUser.set({
         $id: user.$id,
         name: user.name,
-        email: user.email
+        email: user.email,
+        labels: user.labels || []
       });
     } catch (error: any) {
       throw new Error(error.message || 'Error al actualizar email');

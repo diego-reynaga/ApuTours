@@ -1,0 +1,11 @@
+{
+  "name": "send-contact-email",
+  "version": "1.0.0",
+  "description": "Appwrite Function para enviar emails de contacto usando SMTP",
+  "main": "index.js",
+  "type": "module",
+  "dependencies": {
+    "node-appwrite": "^13.0.0",
+    "nodemailer": "^6.9.7"
+  }
+}

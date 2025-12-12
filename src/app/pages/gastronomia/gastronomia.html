@@ -62,10 +62,12 @@
                 }
             </div>
         </div>
-        <div class="filters-summary" *ngIf="hasActiveFilters()">
+        @if (hasActiveFilters()) {
+        <div class="filters-summary">
             <p>Mostrando resultados filtrados.</p>
             <button class="chip clear" type="button" (click)="clearFilters()"><i class="fas fa-times"></i> Limpiar filtros</button>
         </div>
+        }
     </div>
 </section>
 
@@ -117,19 +119,24 @@
         </div>
 
         <!-- Loading State -->
-        <div *ngIf="isLoading()" class="loading-state" style="text-align: center; padding: 3rem;">
+        @if (isLoading()) {
+        <div class="loading-state" style="text-align: center; padding: 3rem;">
             <i class="fas fa-spinner fa-spin fa-2x"></i>
             <p style="margin-top: 1rem;">Cargando establecimientos...</p>
         </div>
+        }
 
         <!-- Error State -->
-        <div *ngIf="error()" class="error-state" style="text-align: center; padding: 3rem; color: var(--error);">
+        @if (error()) {
+        <div class="error-state" style="text-align: center; padding: 3rem; color: var(--error);">
             <i class="fas fa-exclamation-circle fa-2x"></i>
             <p style="margin-top: 1rem;">{{ error() }}</p>
             <button class="btn ghost" (click)="ngOnInit()">Intentar de nuevo</button>
         </div>
+        }
 
-        <div class="establishments-container" *ngIf="!isLoading() && !error()">
+        @if (!isLoading() && !error()) {
+        <div class="establishments-container">
             @for (place of filteredEstablishments(); track place.$id) {
             <article class="establishment-card">
                 <div class="establishment-image">
@@ -158,18 +165,24 @@
                             <p><i class="fas fa-map-marker-alt"></i> {{ place.ubicacion }}</p>
                             <p><i class="fas fa-clock"></i> {{ place.horario }}</p>
                         </div>
-                        <a class="establishment-action" routerLink="/reservas"><i class="fas fa-calendar-plus"></i> Reservar</a>
+                        <a class="establishment-action" routerLink="/reservas" 
+                           [queryParams]="{tipo: 'destination', nombre: place.nombre, precio: 50, id: place.$id}">
+                            <i class="fas fa-calendar-plus"></i> Reservar
+                        </a>
                     </div>
                 </div>
             </article>
             }
-            <div class="empty-state" *ngIf="!filteredEstablishments().length">
+            @if (!filteredEstablishments().length) {
+            <div class="empty-state">
                 <div class="empty-icon"><i class="fas fa-utensils"></i></div>
                 <h3>No encontramos coincidencias</h3>
                 <p>Prueba con otro término o ajusta las categorías y precios.</p>
                 <button class="btn ghost" type="button" (click)="clearFilters()"><i class="fas fa-sync"></i> Restablecer filtros</button>
             </div>
+            }
         </div>
+        }
     </div>
 </section>
 

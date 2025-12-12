@@ -7,6 +7,7 @@ import { Hospedaje } from './pages/hospedaje/hospedaje';
 import { Reservas } from './pages/reservas/reservas';
 import { Contacto } from './pages/contacto/contacto';
 import { Login } from './pages/login/login';
+import { VerificarComprobante } from './pages/verificar-comprobante/verificar-comprobante';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -17,5 +18,6 @@ export const routes: Routes = [
   { path: 'reservas', component: Reservas },
   { path: 'contacto', component: Contacto },
   { path: 'login', component: Login },
+  { path: 'verificar-comprobante', component: VerificarComprobante },
   { path: '**', redirectTo: '' }
 ];

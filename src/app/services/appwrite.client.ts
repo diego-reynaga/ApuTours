@@ -1,4 +1,4 @@
-import { Client, Databases } from 'appwrite';
+import { Client, Databases, Functions } from 'appwrite';
 import { environment } from '../../environments/environment';
 
 const client = new Client()
@@ -7,5 +7,6 @@ const client = new Client()
 
 export const AppwriteClient = client;
 export const AppwriteDatabases = new Databases(client);
+export const AppwriteFunctions = new Functions(client);
 
 export default client;

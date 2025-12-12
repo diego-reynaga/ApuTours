@@ -1,6 +1,7 @@
 import { Component, OnInit, inject, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { Navbar } from '../../components/navbar/navbar';
 import { Footer } from '../../components/footer/footer';
 import { DestinosService, Destino } from '../../services/destinos.service';
@@ -24,7 +25,7 @@ interface InsightCard {
 @Component({
   selector: 'app-destinos',
   standalone: true,
-  imports: [CommonModule, FormsModule, Navbar, Footer],
+  imports: [CommonModule, FormsModule, RouterLink, Navbar, Footer],
   templateUrl: './destinos.html',
   styleUrl: './destinos.css',
 })

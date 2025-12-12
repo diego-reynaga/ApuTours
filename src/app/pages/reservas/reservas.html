@@ -130,6 +130,29 @@
                             </div>
                         }
 
+                        @if (servicioSeleccionado()) {
+                            <div class="form-section servicio-preseleccionado">
+                                <h4><i class="fas fa-tag"></i> Servicio Seleccionado</h4>
+                                <div class="servicio-info-box">
+                                    <div class="servicio-nombre">
+                                        <i class="fas" [ngClass]="{
+                                            'fa-hotel': selectedType() === 'accommodation',
+                                            'fa-car': selectedType() === 'transport',
+                                            'fa-map-marked-alt': selectedType() === 'destination',
+                                            'fa-gift': selectedType() === 'package',
+                                            'fa-utensils': selectedType() === 'gastronomy'
+                                        }"></i>
+                                        {{ servicioSeleccionado() }}
+                                    </div>
+                                    @if (precioBase() > 0) {
+                                        <div class="servicio-precio">
+                                            S/ {{ precioBase().toFixed(2) }} <span>por noche/día</span>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+
                         <div class="form-section">
                             <h4><i class="fas fa-calendar"></i> Fechas</h4>
                             <div class="form-row">
@@ -138,7 +161,9 @@
                                     <input 
                                         type="date" 
                                         [(ngModel)]="reservationDetails.startDate"
+                                        (ngModelChange)="onFormChange()"
                                         name="startDate"
+                                        [min]="minDate"
                                         required>
                                 </div>
                                 <div class="form-group">
@@ -146,7 +171,9 @@
                                     <input 
                                         type="date" 
                                         [(ngModel)]="reservationDetails.endDate"
+                                        (ngModelChange)="onFormChange()"
                                         name="endDate"
+                                        [min]="reservationDetails.startDate || minDate"
                                         required>
                                 </div>
                             </div>
@@ -163,23 +190,23 @@
                             <div class="form-row">
                                 <div class="form-group">
                                     <label>Adultos (mayores de 12 años)</label>
-                                    <select [(ngModel)]="reservationDetails.adults" name="adults" required>
-                                        <option [value]="1">1 Adulto</option>
-                                        <option [value]="2">2 Adultos</option>
-                                        <option [value]="3">3 Adultos</option>
-                                        <option [value]="4">4 Adultos</option>
-                                        <option [value]="5">5 Adultos</option>
-                                        <option [value]="6">6+ Adultos</option>
+                                    <select [(ngModel)]="reservationDetails.adults" (ngModelChange)="onFormChange()" name="adults" required>
+                                        <option [ngValue]="1">1 Adulto</option>
+                                        <option [ngValue]="2">2 Adultos</option>
+                                        <option [ngValue]="3">3 Adultos</option>
+                                        <option [ngValue]="4">4 Adultos</option>
+                                        <option [ngValue]="5">5 Adultos</option>
+                                        <option [ngValue]="6">6+ Adultos</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label>Niños (menores de 12 años)</label>
-                                    <select [(ngModel)]="reservationDetails.children" name="children">
-                                        <option [value]="0">Sin niños</option>
-                                        <option [value]="1">1 Niño</option>
-                                        <option [value]="2">2 Niños</option>
-                                        <option [value]="3">3 Niños</option>
-                                        <option [value]="4">4+ Niños</option>
+                                    <select [(ngModel)]="reservationDetails.children" (ngModelChange)="onFormChange()" name="children">
+                                        <option [ngValue]="0">Sin niños</option>
+                                        <option [ngValue]="1">1 Niño</option>
+                                        <option [ngValue]="2">2 Niños</option>
+                                        <option [ngValue]="3">3 Niños</option>
+                                        <option [ngValue]="4">4+ Niños</option>
                                     </select>
                                 </div>
                             </div>
@@ -191,11 +218,39 @@
                                     <i class="fas fa-calculator"></i>
                                     Precio Estimado
                                 </div>
+                                <div class="estimate-breakdown">
+                                    <div class="breakdown-row">
+                                        <span class="breakdown-label">Adultos:</span>
+                                        <span class="breakdown-value">{{ reservationDetails.adults }} × S/ {{ precioUnitario().toFixed(2) }} = S/ {{ (reservationDetails.adults * precioUnitario() * (totalDays() || 1)).toFixed(2) }}</span>
+                                    </div>
+                                    @if (reservationDetails.children > 0) {
+                                        <div class="breakdown-row">
+                                            <span class="breakdown-label">Niños (50%):</span>
+                                            <span class="breakdown-value">{{ reservationDetails.children }} × S/ {{ (precioUnitario() * 0.5).toFixed(2) }} = S/ {{ (reservationDetails.children * precioUnitario() * 0.5 * (totalDays() || 1)).toFixed(2) }}</span>
+                                        </div>
+                                    }
+                                    @if ((totalDays() || 1) > 1) {
+                                        <div class="breakdown-row">
+                                            <span class="breakdown-label">Duración:</span>
+                                            <span class="breakdown-value">{{ totalDays() }} día(s)</span>
+                                        </div>
+                                    }
+                                    <div class="breakdown-divider"></div>
+                                    <div class="breakdown-row">
+                                        <span class="breakdown-label"><strong>Subtotal:</strong></span>
+                                        <span class="breakdown-value"><strong>S/ {{ estimatedPrice().toFixed(2) }}</strong></span>
+                                    </div>
+                                    <div class="breakdown-row">
+                                        <span class="breakdown-label">IGV (18%):</span>
+                                        <span class="breakdown-value">S/ {{ (estimatedPrice() * 0.18).toFixed(2) }}</span>
+                                    </div>
+                                    <div class="breakdown-divider"></div>
+                                </div>
                                 <div class="estimate-value">
-                                    S/ {{ estimatedPrice().toFixed(2) }}
+                                    S/ {{ (estimatedPrice() * 1.18).toFixed(2) }}
                                 </div>
                                 <div class="estimate-note">
-                                    * Precio referencial, puede variar según servicios adicionales
+                                    * Precio incluye IGV. Puede variar según servicios adicionales.
                                 </div>
                             </div>
                         }
@@ -287,7 +342,8 @@
                                     <span class="summary-label">Tipo:</span>
                                     <span class="summary-value">{{ selectedType() === 'package' ? 'Paquete Completo' : 
                                                                        selectedType() === 'destination' ? 'Solo Destinos' :
-                                                                       selectedType() === 'accommodation' ? 'Solo Hospedaje' : 'Solo Transporte' }}</span>
+                                                                       selectedType() === 'accommodation' ? 'Solo Hospedaje' :
+                                                                       selectedType() === 'gastronomy' ? 'Gastronomía' : 'Solo Transporte' }}</span>
                                 </div>
                                 <div class="summary-item">
                                     <span class="summary-label">Fechas:</span>
@@ -345,6 +401,93 @@
                             <span class="code-value">{{ confirmationCode() }}</span>
                         </div>
 
+                        <!-- Error al generar comprobante -->
+                        @if (comprobanteError(); as error) {
+                            <div class="comprobante-error">
+                                <div class="error-content">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <div class="error-text">
+                                        <h4>No se pudo generar el comprobante</h4>
+                                        <p>{{ error }}</p>
+                                        <p class="error-note">Tu reserva fue creada correctamente. Puedes intentar generar el comprobante nuevamente.</p>
+                                    </div>
+                                </div>
+                                <button 
+                                    type="button" 
+                                    class="btn btn-retry" 
+                                    (click)="reintentarComprobante()"
+                                    [disabled]="isSubmitting()">
+                                    @if (isSubmitting()) {
+                                        <i class="fas fa-spinner fa-spin"></i>
+                                        Generando...
+                                    } @else {
+                                        <i class="fas fa-redo"></i>
+                                        Reintentar generar comprobante
+                                    }
+                                </button>
+                            </div>
+                        }
+
+                        <!-- Comprobante de Pago -->
+                        @if (comprobanteGenerado(); as comprobante) {
+                            <div class="comprobante-card">
+                                <div class="comprobante-header">
+                                    <i class="fas fa-file-invoice-dollar"></i>
+                                    <h3>Comprobante de Pago</h3>
+                                </div>
+                                
+                                <div class="comprobante-body">
+                                    <div class="comprobante-row">
+                                        <span class="label">Nº Comprobante:</span>
+                                        <span class="value codigo">{{ comprobante.codigoComprobante }}</span>
+                                    </div>
+                                    <div class="comprobante-row highlight">
+                                        <span class="label">Código de Verificación:</span>
+                                        <span class="value verification-code">{{ comprobante.codigoVerificacion }}</span>
+                                    </div>
+                                    <div class="comprobante-row">
+                                        <span class="label">Cliente:</span>
+                                        <span class="value">{{ comprobante.clienteNombre }}</span>
+                                    </div>
+                                    <div class="comprobante-row">
+                                        <span class="label">Documento:</span>
+                                        <span class="value">{{ comprobante.clienteDocumento }}</span>
+                                    </div>
+                                    <div class="comprobante-row">
+                                        <span class="label">Servicio:</span>
+                                        <span class="value">{{ comprobante.descripcionServicio }}</span>
+                                    </div>
+                                    <div class="comprobante-divider"></div>
+                                    <div class="comprobante-row">
+                                        <span class="label">Subtotal:</span>
+                                        <span class="value">S/ {{ comprobante.subtotal.toFixed(2) }}</span>
+                                    </div>
+                                    <div class="comprobante-row">
+                                        <span class="label">IGV (18%):</span>
+                                        <span class="value">S/ {{ comprobante.impuestos.toFixed(2) }}</span>
+                                    </div>
+                                    <div class="comprobante-row total">
+                                        <span class="label">TOTAL:</span>
+                                        <span class="value">S/ {{ comprobante.total.toFixed(2) }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="comprobante-footer">
+                                    <div class="verification-notice">
+                                        <i class="fas fa-shield-alt"></i>
+                                        <p>Guarda tu <strong>código de verificación</strong>. El proveedor del servicio lo usará para validar tu comprobante.</p>
+                                    </div>
+
+                                    <div class="comprobante-actions">
+                                        <button type="button" class="btn btn-primary" (click)="descargarComprobantePdf()">
+                                            <i class="fas fa-file-pdf"></i>
+                                            Descargar comprobante (PDF)
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
                         <div class="confirmation-info">
                             <div class="info-item">
                                 <i class="fas fa-envelope"></i>
@@ -366,7 +509,7 @@
                                 <li>Recibirás un correo con los detalles completos de tu reserva</li>
                                 <li>Un agente te contactará en las próximas 24 horas para confirmar</li>
                                 <li>Podrás realizar el pago mediante transferencia o en oficina</li>
-                                <li>¡Prepárate para tu aventura en Andahuaylas!</li>
+                                <li>Presenta tu código de verificación al momento de usar el servicio</li>
                             </ol>
                         </div>
 

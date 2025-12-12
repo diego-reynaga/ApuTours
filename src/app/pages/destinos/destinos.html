@@ -130,7 +130,11 @@
               </div>
               <div class="card-buttons">
                 <button class="btn btn-outline btn-sm" type="button"><i class="fas fa-info"></i> Detalles</button>
-                <button class="btn btn-primary btn-sm" type="button"><i class="fas fa-calendar-plus"></i> Reservar</button>
+                <a routerLink="/reservas" 
+                   [queryParams]="{tipo: 'destination', nombre: destination.nombre, precio: destination.precio, id: destination.$id}"
+                   class="btn btn-primary btn-sm">
+                    <i class="fas fa-calendar-plus"></i> Reservar
+                </a>
               </div>
             </div>
           </div>
